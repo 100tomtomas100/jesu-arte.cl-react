@@ -1,11 +1,12 @@
 import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
+import { AdvancedImage, responsive } from "@cloudinary/react";
 // import {fill} from "@cloudinary/url-gen/actions/resize";
 // import styles from "./Cloudify.module.scss";
 
 interface cloudifyProps {
   imgTitle: string;
-  imgWidth: string;
+  imgWidth?: string;
+  imgFormat?: string;
 }
 
 const Cloudify = ({ ...props }: cloudifyProps) => {
@@ -14,21 +15,27 @@ const Cloudify = ({ ...props }: cloudifyProps) => {
     cloud: {
       cloudName: "retratos-de-mascotas",
     },
+    url: {
+      secure: true,
+    },
   });
 
   const myImage = cld.image(props.imgTitle);
 
   //settings to request an image
-  myImage.format("auto").quality("auto:best");
-
+  myImage
+    .format(`${props.imgFormat ? props.imgFormat : "auto"}`)
+    .quality("auto:best");
+  //   console.log(myImage.toURL())
   return (
-      <AdvancedImage
-        style={{ maxWidth: "100%" }}
-        cldImg={myImage}
-        plugins={[responsive(),
-            //  placeholder({ mode: "vectorize" })
-            ]}
-      />    
+    <AdvancedImage
+      style={{ maxWidth: "100%" }}
+      cldImg={myImage}
+      plugins={[
+        responsive({ steps: 100 }),
+        //  placeholder({ mode: "vectorize" })
+      ]}
+    />
   );
 };
 

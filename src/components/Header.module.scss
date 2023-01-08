@@ -1,7 +1,6 @@
 .header{
-    width: 100vw;
     height: calc(10vh + 3vw);
-    background-color: aqua;
+    background-color: #F0ECEC;
     display: flex;
 }
 
@@ -11,4 +10,5 @@
     display: flex;
     margin-left: 10px;
     align-items: center;
+    cursor: pointer;
 }
