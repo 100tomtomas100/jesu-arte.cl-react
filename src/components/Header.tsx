@@ -5,9 +5,8 @@ import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
 
 const Header = (): JSX.Element => {
-
   type cloudifyTypes = {
-    imgTitle: string; 
+    imgTitle: string;
   };
 
   const cloudifyProps: cloudifyTypes = {
@@ -17,11 +16,11 @@ const Header = (): JSX.Element => {
   return (
     <StickyBox>
       <div className={styles.header}>
-        <div className={styles.logo}>
-          <Link to="./">
-          <Cloudify {...cloudifyProps} />
-          </Link>
-        </div>
+        <Link to="./">
+          <div className={styles.logo}>
+            <Cloudify {...cloudifyProps} />
+          </div>
+        </Link>
         <NavBar />
       </div>
     </StickyBox>

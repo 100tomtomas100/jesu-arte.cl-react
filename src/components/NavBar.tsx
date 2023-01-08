@@ -67,7 +67,6 @@ const NavBar = (): JSX.Element => {
           <Link key={link} to={navLinks[link as keyof typeof navLinks].to}>
             <div className={styles.navLink}>
               <img
-                id={link}
                 src={navLinks[link as keyof typeof navLinks].src}
                 alt={navLinks[link as keyof typeof navLinks].alt}
               />

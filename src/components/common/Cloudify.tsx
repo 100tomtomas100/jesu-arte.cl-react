@@ -25,7 +25,7 @@ const Cloudify = ({ ...props }: cloudifyProps) => {
   //settings to request an image
   myImage
     .format(`${props.imgFormat ? props.imgFormat : "auto"}`)
-    .quality("auto:best");
+    .quality("100");
   //   console.log(myImage.toURL())
   return (
     <AdvancedImage
