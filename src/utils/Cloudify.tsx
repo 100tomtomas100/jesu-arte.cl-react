@@ -1,40 +1,41 @@
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, responsive } from "@cloudinary/react";
-// import {fill} from "@cloudinary/url-gen/actions/resize";
-// import styles from "./Cloudify.module.scss";
+import { Cloudinary, CloudinaryImage } from "@cloudinary/url-gen";
+import { AdvancedImage, lazyload, responsive, placeholder } from "@cloudinary/react";
 
-interface cloudifyProps {
+interface cloudifyTypes {
   imgTitle: string;
   imgWidth?: string;
   imgFormat?: string;
 }
 
-const Cloudify = ({ ...props }: cloudifyProps) => {
+const Cloudify = ({ ...props }: cloudifyTypes) => {
   // Create a Cloudinary instance and set your cloud name.
-  const cld = new Cloudinary({
+  const cld: Cloudinary = new Cloudinary({
     cloud: {
       cloudName: "retratos-de-mascotas",
     },
     url: {
       secure: true,
+      analytics: false
     },
   });
-
-  const myImage = cld.image(props.imgTitle);
+  
+  const myImage: CloudinaryImage = cld.image(props.imgTitle);
 
   //settings to request an image
   myImage
     .format(`${props.imgFormat ? props.imgFormat : "auto"}`)
-    .quality("100");
-  //   console.log(myImage.toURL())
+    .quality(100)
+  
   return (
     <AdvancedImage
-      style={{ maxWidth: "100%" }}
-      cldImg={myImage}
+      
       plugins={[
+        // lazyload(),
         responsive({ steps: 100 }),
         //  placeholder({ mode: "vectorize" })
       ]}
+      style={{ maxWidth: "100%" }}
+      cldImg={myImage}
     />
   );
 };

@@ -1,0 +1,39 @@
+@import "config";
+
+.textWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .text {
+    width: 80%;
+    text-align: justify;
+    font-size: 0.9em;
+    color: $dark-color;
+    font-weight: 500;
+    will-change: transform;
+  }
+}
+
+@media (min-width: $breakpoint-801) and (max-width: $breakpoint-1000) {
+  .textWrapper {
+    .text {
+      font-size: 0.8em;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-601) and (max-width: $breakpoint-800){
+  .textWrapper{
+    .text{
+      font-size: 0.75em;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-600){
+  .textWrapper{
+    .text{
+      font-size: 0.65em;
+    }
+  }
+}

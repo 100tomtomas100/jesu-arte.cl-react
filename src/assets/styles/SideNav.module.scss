@@ -1,0 +1,50 @@
+@import "config";
+
+.wrapper {
+  z-index: 9;
+  top: 50%;
+  transform: translateY(-50%);
+  position: fixed;
+  .sideNav {
+    will-change: transform;
+    visibility: hidden;
+    opacity: 0;
+    padding: 5px;
+    bottom: auto;
+    height: 50vh;
+    background-color: $dark-color;
+    display: grid;
+    align-items: center;
+    justify-content: space-around;
+    align-content: space-around;
+    border-radius: 0 20px 20px 0;
+    .navLinks {
+      opacity: 0;
+      visibility: hidden;
+      width: 30px;
+      img {
+        max-width: 100%;
+        //light green
+        filter: invert(76%) sepia(3%) saturate(1118%) hue-rotate(57deg)
+          brightness(107%) contrast(102%);
+        &:hover {
+          transition: all 0.4s ease;
+          //white
+          filter: invert(99%) sepia(0%) saturate(3494%) hue-rotate(277deg)
+            brightness(114%) contrast(100%);
+          transform: scale(1.1) translate3d(0, 0, 0);
+        }
+        &:active {
+          transition: all 0.2s ease;
+          transform: scale(0.8) translate3d(0, 0, 0);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-600) {
+  .wrapper{
+    display: none;
+  }
+}

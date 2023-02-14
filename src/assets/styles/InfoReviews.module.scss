@@ -1,0 +1,15 @@
+@import "config";
+.infoReviews {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  background-color: $light-color;
+  overflow: hidden;
+}
+
+@media (max-width: $breakpoint-600){
+  .infoReviews{
+    height: 90vh;
+    // padding-top: 10vh;
+  }
+}

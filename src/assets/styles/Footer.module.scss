@@ -1,0 +1,87 @@
+@import "config";
+.footer {
+  outline: 1px solid $light-color;
+  font-family: "Montserrat", sans-serif;
+  height: 35vh;
+  background-color: $light-color;
+  display: grid;
+  grid-template-rows: 2fr 3fr;
+  will-change: transform;
+  .footerCredits,
+  .footerCooperation {
+    margin-left: 60px;
+  }
+  .footerCredits {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    .designedBy {
+      display: flex;
+      align-items: flex-start;
+    }
+    .tomas {
+      display: flex;
+      align-items: center;
+    }
+    .year {
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+  .footerCooperation {
+    display: grid;
+    grid-template-rows: 1.5fr 2.5fr;
+    .marcia {
+      display: flex;
+      align-items: center;
+      a {
+        color: black;
+      }
+    }
+    .footerSocialize {
+      display: grid;
+      a {
+        text-decoration: none;
+        color: black;
+      }
+      .socialLinks {
+        display: flex;
+        justify-content: space-around;
+        img {
+          width: calc(35px + 6vw);
+        }
+      }
+    }
+  }
+  h6 {
+    font-size: calc(9px + 0.5vw);
+    color: $dark-color;
+    will-change: transform;
+  }
+  h5 {
+    font-size: calc(10px + 0.5vw);
+    color: $dark-color;
+    will-change: transform;
+  }
+  h4 {
+    font-size: calc(12px + 0.5vw);
+    will-change: transform;
+  }
+  h2 {
+    font-size: calc(14px + 0.5vw);
+    will-change: transform;
+  }
+  .animate {
+    transform: translateX(100vw);
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+@media (max-width: $breakpoint-600) {
+  .footer {
+    .footerCredits,
+    .footerCooperation {
+      margin-left: 10px;
+    }
+  }
+}

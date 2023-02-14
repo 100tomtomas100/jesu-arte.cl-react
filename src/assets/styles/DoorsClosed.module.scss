@@ -1,0 +1,32 @@
+@import "config";
+.doors {
+  height: 65%;
+  position: absolute;
+  object-fit: contain;
+  right: 0;
+  top: 30%;
+  animation: blinkingDoors 8s linear infinite alternate;
+  cursor: pointer;
+}
+
+@keyframes blinkingDoors {
+  0% {
+    filter: $dark-filter;
+  }
+  50% {
+    //red
+    filter: invert(21%) sepia(80%) saturate(6598%) hue-rotate(355deg)
+      brightness(97%) contrast(123%);
+  }
+  100% {
+    //grey
+    filter: invert(51%) sepia(5%) saturate(292%) hue-rotate(131deg)
+      brightness(91%) contrast(92%);
+  }
+}
+
+@media (max-width: $breakpoint-600){
+  .doors{
+   display: none;
+  }
+}

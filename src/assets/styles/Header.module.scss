@@ -1,0 +1,21 @@
+@import "config";
+.header {
+  outline: 1px solid $light-color;
+  height: calc(5vh + 3vw);
+  display: flex;
+  background-color: $light-color;
+  .logo {
+    height: 100%;
+    width: calc(5vh + 3vw);
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: $breakpoint-600) {
+  .header {
+    display: none;
+  }
+}
