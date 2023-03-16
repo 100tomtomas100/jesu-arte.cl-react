@@ -43,7 +43,7 @@ const useNavLinkInfo = (nav: string):{ [key: string]: {[key:string]: string} } =
         ...navLink("aboutUs", "/")
       },
       portfolio: {
-        ...navLink("portfolio", "/portfolio")
+        ...navLink("portfolio", "/gallery")
       },
       howBuy: {
         ...navLink("howBuy", "/how-buy")

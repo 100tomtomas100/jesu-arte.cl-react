@@ -6,70 +6,78 @@
   display: flex;
   justify-content: flex-end;
   background-color: $light-color;
-  .image {
-    border-radius: 20px;
-    position: absolute;
-    object-fit: contain;
-    width: 30%;
-    top: 12%;
-    left: 15%;
-    overflow: hidden;
-    transform: scale(0);
-    visibility: hidden;
-    opacity: 0;
-  }
-  .text {
-    color: $dark-color;
-    font-size: 1.5em;
-    margin-right: 15vw;
-    margin-top: 15vh;
-    line-height: 3em;
-    font-weight: 600;
-    text-align: center;
-    font-family: "Klein", sans-serif;
-    will-change: transform;
-  }
-  .textColor {
-    color: black;
+  .container {
+    height: 100%;
+    .image {
+      border-radius: 20px;
+      position: absolute;
+      object-fit: contain;
+      width: 30%;
+      top: 12%;
+      left: 15%;
+      overflow: hidden;
+      transform: scale(0);
+      visibility: hidden;
+      opacity: 0;
+    }
+    .text {
+      color: $dark-color;
+      font-size: 1.5em;
+      margin-right: 15vw;
+      margin-top: 15vh;
+      line-height: 3em;
+      font-weight: 600;
+      text-align: center;
+      font-family: "Klein", sans-serif;
+      will-change: transform;
+    }
+    .textColor {
+      color: black;
+    }
   }
 }
 
 @media (min-width: $breakpoint-601) and (max-width: $breakpoint-800) {
   .textWrapper {
-    .text {
-      font-size: 1.1em;
-    }
-    .image {
-      top: 20%;
-    }
-    .text {
-      margin-top: 25vh;
-      margin-right: 12vw;
+    .container {
+      .text {
+        font-size: 1.1em;
+      }
+      .image {
+        top: 20%;
+      }
+      .text {
+        margin-top: 25vh;
+        margin-right: 12vw;
+      }
     }
   }
 }
 @media (max-width: $breakpoint-600) {
   .textWrapper {
     padding-top: 10vh;
-    // height: 90vh;
-    .image {
-      width: 100%;
-      left: 0;
-      top: 0;
-      opacity: 0.5;
-    }
-    .text {
-      font-size: calc(2px + 2.8vw);
-      margin-top: 5%;
-      margin-right: 10px;
+    .container {
+      .image {
+        width: 100%;
+        left: 0;
+        top: 0;
+        opacity: 0.5;
+      }
+      .text {
+        font-size: calc(2px + 2.8vw);
+        margin-top: 5%;
+        margin-right: 10px;
+      }
     }
   }
 }
-@media(max-width: 450px){
-  .textWrapper{
-    .text{
-      margin-top: -5%;
-      margin-right: 5px;
+@media (max-width: 450px) {
+  .textWrapper {
+    .container {
+      .text {
+        margin-top: -5%;
+        margin-right: 5px;
+      }
     }
   }
 }

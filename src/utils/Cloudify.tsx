@@ -1,10 +1,13 @@
 import { Cloudinary, CloudinaryImage } from "@cloudinary/url-gen";
 import { AdvancedImage, lazyload, responsive, placeholder } from "@cloudinary/react";
+import { scale } from "@cloudinary/url-gen/actions/resize";
 
 interface cloudifyTypes {
   imgTitle: string;
-  imgWidth?: string;
+  imgWidth?: number;
   imgFormat?: string;
+  // hasLoaded? : React.Dispatch<React.SetStateAction<boolean>>
+  hasLoaded?: any
 }
 
 const Cloudify = ({ ...props }: cloudifyTypes) => {
@@ -25,15 +28,33 @@ const Cloudify = ({ ...props }: cloudifyTypes) => {
   myImage
     .format(`${props.imgFormat ? props.imgFormat : "auto"}`)
     .quality(100)
+  if (props.imgWidth) {
+      myImage.resize(scale().width(props.imgWidth))
+  }
   
+  // const loaded = () => {
+  //   if (props.hasLoaded) {
+  //     props.hasLoaded(true);
+  //   }
+  // }
+   const loaded = () => {
+     if (props.hasLoaded) {
+       props.hasLoaded();
+     }
+   };
+  const plugins = props.imgWidth?[]: [responsive({ steps: 100 })]
+ 
   return (
     <AdvancedImage
-      
-      plugins={[
-        // lazyload(),
-        responsive({ steps: 100 }),
-        //  placeholder({ mode: "vectorize" })
-      ]}
+      onLoad={loaded}
+      plugins={
+        plugins
+        // [
+        // // lazyload(),
+        // // responsive({ steps: 100 }),
+        // //  placeholder({ mode: "vectorize" })
+        // ]
+      }
       style={{ maxWidth: "100%" }}
       cldImg={myImage}
     />

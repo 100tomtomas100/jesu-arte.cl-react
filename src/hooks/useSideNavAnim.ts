@@ -1,11 +1,24 @@
 import { gsap } from "gsap";
-import {  useLayoutEffect } from "react";
+import { useLayoutEffect, useContext } from "react";
+import AnimContext from "../context/AnimContext";
 
-const useSideNavAnim = (props: {[key: string]: string}) => {
+
+interface PropsTypes {
+  wrapper: unknown;
+  nav: string;
+  links: string;
+}
+
+const useSideNavAnim = (props:PropsTypes ) => {
+  
+  //for checking if scrollSmoother is set
+  const smootherOk = useContext(AnimContext);
+
   useLayoutEffect(() => {
+    if (smootherOk) {
       const tl: gsap.core.Timeline = gsap.timeline({
         scrollTrigger: {
-          trigger: `.${props.wrapper}`,
+          trigger: `.${props.nav}`,
           start: "center 45%",
           toggleActions: "play none none reverse",
         },
@@ -21,11 +34,10 @@ const useSideNavAnim = (props: {[key: string]: string}) => {
           duration: 0.2,
           stagger: 0.1,
         });
-      }, `.${props.wrapper}`);
-      return () => ctx.revert(); 
-    
-  }, []);
-
+      }, (props.wrapper as any).current);
+      return () => ctx.revert();
+    }
+  }, [smootherOk]);
 };
 
 export default useSideNavAnim;

@@ -22,7 +22,8 @@ const DoorsClosed = ({ className }: { className: string }): JSX.Element => {
   };
 
   const handleClick = (): void => {
-    navigation("./portfolio");
+     window.scrollTo(0, 0);
+    navigation("./gallery");
   };
 
   return (

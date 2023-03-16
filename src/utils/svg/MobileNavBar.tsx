@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import useMobileNavBarAnim from "../../hooks/useMobileNavBarAnim";
 
-const MobileNavBar = ({ className, navLink, navScope }: { className: string, navLink: string, navScope: string }): JSX.Element => {
+const MobileNavBar = ({ className, navLink, navScope }: { className: string, navLink: string, navScope: unknown }): JSX.Element => {
   const barRef = useRef<SVGPathElement | null>(null);
   const [showNav, setShowNav] = useState<boolean>(false);
   useMobileNavBarAnim({
     barRef: barRef as unknown,
     showNav: showNav as boolean,
     navLink: navLink as string,
-    navScope: navScope as string,
+    navScope: navScope as unknown,
   });
 
   const handleClick = () => {

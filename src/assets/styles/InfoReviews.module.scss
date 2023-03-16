@@ -1,5 +1,5 @@
 @import "config";
-.infoReviews {
+.container {
   height: 100vh;
   width: 100%;
   display: grid;
@@ -8,7 +8,7 @@
 }
 
 @media (max-width: $breakpoint-600){
-  .infoReviews{
+  .container{
     height: 90vh;
     // padding-top: 10vh;
   }

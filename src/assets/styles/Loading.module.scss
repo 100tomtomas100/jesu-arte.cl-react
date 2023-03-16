@@ -1,0 +1,20 @@
+@import "config";
+.loading {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 100px;
+    z-index: 9;
+    filter: $dark-filter;
+    animation: rotate 1s infinite ease-out;
+}
+@keyframes rotate{
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}

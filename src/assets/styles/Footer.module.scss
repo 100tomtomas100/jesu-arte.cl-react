@@ -1,5 +1,5 @@
 @import "config";
-.footer {
+.container {
   outline: 1px solid $light-color;
   font-family: "Montserrat", sans-serif;
   height: 35vh;
@@ -78,7 +78,7 @@
 }
 
 @media (max-width: $breakpoint-600) {
-  .footer {
+  .container {
     .footerCredits,
     .footerCooperation {
       margin-left: 10px;

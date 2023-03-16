@@ -1,22 +1,27 @@
 import IndexInfoText from "../components/AboutUs/IndexInfoText";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useContext } from "react";
 import { ScrollTrigger } from "gsap/all";
 import IndexGallery from "../components/AboutUs/IndexGallery";
 import InfoReviews from "../components/AboutUs/InfoReviews";
 import gsap from "gsap";
 import getWindowWidth from "../utils/getWindowWidth";
-
-gsap.registerPlugin(ScrollTrigger);
+import AnimContext from "../context/AnimContext";
 
 const AboutUs = (): JSX.Element => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const { footerTimeline } = useContext(AnimContext)
+  useEffect(() => {
+    if (footerTimeline) {
+      footerTimeline.scrollTrigger.refresh()
+    }
+  }, [footerTimeline])
 
   useEffect(() => {
     const handleResize = (): void => {
       setWindowWidth(getWindowWidth());
     };
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);    
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 

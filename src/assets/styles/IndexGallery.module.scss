@@ -1,7 +1,7 @@
 @import "config";
 @import "textSplitting";
 
-.gallery {
+.container {
   outline: 4px solid transparent;
   position: relative;
   height: 100vh;
@@ -80,7 +80,7 @@
 }
 
 @media (max-width: $breakpoint-600) {
-  .gallery {
+  .container {
     // height: 90vh;
     padding-top: 10vh;
     .wall {
@@ -123,6 +123,9 @@
     .text {
       font-size: calc(20px + 6vw);
       z-index: 2;
+    }
+    .arrow {
+      cursor: pointer;
     }
   }
 }
