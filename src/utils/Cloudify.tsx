@@ -32,11 +32,6 @@ const Cloudify = ({ ...props }: cloudifyTypes) => {
       myImage.resize(scale().width(props.imgWidth))
   }
   
-  // const loaded = () => {
-  //   if (props.hasLoaded) {
-  //     props.hasLoaded(true);
-  //   }
-  // }
    const loaded = () => {
      if (props.hasLoaded) {
        props.hasLoaded();

@@ -184,7 +184,9 @@ const LargeImgGallery = (props: PropsTypes): JSX.Element => {
             <div className={styles.closeButton} onClick={handleClose}>
               <MdClose />
             </div>
+            {/* spinning loading anim on image change while loading the image*/}
             <Loading visible={loadingAnim} />
+            {/* preload images on both sides of the arrows */}
             <PreloadImg {...preloadProps} />
             <GalleryOpenImg {...GalleryOpenImgProps} />
             <div

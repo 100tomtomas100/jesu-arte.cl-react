@@ -1,12 +1,13 @@
 import styles from "../assets/styles/Gallery.module.scss";
 import Cloudify from "../utils/Cloudify";
-import { useLayoutEffect, useState, useContext, useEffect } from "react";
+import { useLayoutEffect, useState, useContext, useRef } from "react";
 //@ts-ignore
 import Columned from "react-columned";
 import { css } from "@emotion/css";
 import LargeImgGallery from "../components/Gallery/LargeImgGallery";
 import useGetImgList from "../hooks/useGetImgList";
 import AnimContext from "../context/AnimContext";
+import useGalleryAnim from "../hooks/useGalleryAnim";
 
 const Gallery = (): JSX.Element => {
   const [clickedImg, setClickedImg] = useState<number | null>(null);
@@ -14,8 +15,15 @@ const Gallery = (): JSX.Element => {
   const list: {
     [key: string]: { [key: string]: string | number };
   } = useGetImgList();
-  const {footerTimeline} = useContext(AnimContext)
-  
+  const { footerTimeline } = useContext(AnimContext)
+  const [galLoaded, setGalLoaded] = useState<boolean>(false)
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+  useGalleryAnim({
+    loaded: galLoaded,
+    wrapper: wrapperRef,
+    images: `.${styles.image}`,
+  });
+
   // styles for masonry gallery set up
   const columnedStyles: string = css({
     img: {
@@ -38,11 +46,12 @@ const Gallery = (): JSX.Element => {
 
   const refresh = () => {
     footerTimeline.scrollTrigger.refresh()
+    setGalLoaded(true)
   }
 
   return (
     <>
-    <div className={styles.gallery}>
+    <div className={styles.gallery} ref={wrapperRef}>
       <div className={styles.columnedWrapper}>
         <Columned className={columnedStyles}>
           {Object.keys(list).map((index) => {

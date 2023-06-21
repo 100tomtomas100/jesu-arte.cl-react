@@ -9,6 +9,9 @@
     .image {
       will-change: transform;
       cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.1);
     }
   }
 }

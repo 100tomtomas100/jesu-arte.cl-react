@@ -73,9 +73,9 @@ const PreloadImg = (props: PropsTypes): JSX.Element => {
         props.setLoadingAnim(false);
       }
     }
-    console.log(num)
-    console.log(props.waitingNr)
-    console.log(props)
+    // console.log(num)
+    // console.log(props.waitingNr)
+    // console.log(props)
   };
   return (
     <div>
