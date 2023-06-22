@@ -28,11 +28,9 @@ const getPrevNextImgNum = ({ listLength, currentNum, imgShowing, imgPrevCurrNext
       ...imgPrevCurrNext,
       prev: prev() as number,
       [imgShowing === "curr"? "curr2": "curr"]: currentNum,
-    //     curr: currentNum,
-    //  curr2: currentNum,
       next: next() as number,
     };
-    console.log(prevCurrNext)
+
     return prevCurrNext
 }
 

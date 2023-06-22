@@ -62,7 +62,7 @@ const useReviewsAnim = (props: propsTypes) => {
           (split[0] as any).words,
           {
             autoAlpha: 1,
-            duration: 1,
+            duration: 1.5,
             stagger: 0.006,
           },
           0

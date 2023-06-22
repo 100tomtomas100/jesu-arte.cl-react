@@ -3,6 +3,9 @@ import useNavLinkInfo from "../../hooks/useNavLinkInfo";
 import { Link } from "react-router-dom";
 import useSideNavAnim from "../../hooks/useSideNavAnim";
 import { useRef } from "react";
+import { ScrollToPlugin, gsap } from "gsap/all";
+
+gsap.registerPlugin(ScrollToPlugin)
 
 const SideNav = (): JSX.Element => {
   const navBarLinks: { [key: string]: { [key: string]: string } } =
@@ -19,11 +22,6 @@ const SideNav = (): JSX.Element => {
     links: classes.links
   });
 
-   const toTop = () => {
-     window.scrollTo(0, 0);
-     
-   };
-
   return (
     <div className={`${classes.wrapper}`} ref={wrapperRef}>
       <nav className={classes.nav}>
@@ -32,7 +30,6 @@ const SideNav = (): JSX.Element => {
             <Link
               key={link}
               to={navBarLinks[link].to}
-              onClick={toTop}
             >
               <div className={classes.links}>
                 <img

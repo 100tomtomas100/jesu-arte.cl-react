@@ -6,7 +6,7 @@ import Carousel from "nuka-carousel/lib/carousel";
 import getWindowWidth from "../../utils/getWindowWidth";
 
 const Reviews = ({className}:{className: string}): JSX.Element => {
-  // const reviews: { [key: string]: unknown }[] = useDB();
+  const reviews: { [key: string]: unknown }[] = useDB();
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
   const [windowWidth, setWindowWidth] = useState<number>(0)  
   
@@ -36,7 +36,7 @@ const Reviews = ({className}:{className: string}): JSX.Element => {
 
   return (
     <div className={`${styles.googleReviews} ${className}`}>
-      {/* <Carousel
+      <Carousel
         slidesToShow={windowWidth > 800? 3: windowWidth > 400? 2: 1}
         wrapAround={true}
         autoplay={true}
@@ -126,7 +126,7 @@ const Reviews = ({className}:{className: string}): JSX.Element => {
           );
           }
         })}
-      </Carousel> */}
+      </Carousel>
     </div>
   );
 };

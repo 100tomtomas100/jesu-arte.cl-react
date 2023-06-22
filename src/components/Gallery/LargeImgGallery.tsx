@@ -1,7 +1,5 @@
 import styles from "../../assets/styles/LargeImgGallery.module.scss";
 import { useEffect, useRef, useState } from "react";
-import useChangeImgAnim from "../../hooks/useChangeImgAnim";
-import getImgLargeGallerySize from "../../utils/getImgLargeGallerySize";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import getPrevNextImgNum from "../../utils/getPrevNextImgNum";
@@ -9,169 +7,132 @@ import GalleryOpenImg from "./GalleryOpenImg";
 import PreloadImg from "./PreloadImg";
 import Loading from "./Loading";
 import { createPortal } from "react-dom";
+import useGalStore from "../../hooks/useStore";
 
 interface PropsTypes {
-  clickedImg: number | null;
-  largeGal: boolean;
-  setLargeGal: React.Dispatch<React.SetStateAction<boolean>>;
   list: {
     [key: string]: { [key: string]: string | number };
   };
-  setClickedImg: React.Dispatch<React.SetStateAction<number | null>>
 }
 
 const LargeImgGallery = (props: PropsTypes): JSX.Element => {
   const WrapperRef = useRef<HTMLDivElement | null>(null);
-  const [imgPrevCurrNext, setImgPrevCurrNext] = useState<{
-    [key: string]: number;
-  }>({});
-  const [splitImg, setSplitImg] = useState<Splitting.Result | null>(null);
-  // const [changeImgProps, setChangeImgProps] = useState({});
-  const [currKey, setCurrKey] = useState({ curr: 110, curr2: 110 });
-  const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>(
-    {}
-  );
   const [imgShowing, setImgShowing] = useState<string>("curr");
-  const [animInAct, setAnimInAct] = useState(false);
   const [loadingAnim, setLoadingAnim] = useState(false);
   const [animAfterLoad, setAnimAfterLoad] = useState("");
   const [waitingNr, setWaitingNr] = useState<number | null>(null);
 
+  //store
+  const imgPrevCurrNext = useGalStore((state) => state.imgPrevCurrNext);
+  const setImgPrevCurrNext = useGalStore((state) => state.setImgPrevCurrNext);
+  const setLargeGalOn = useGalStore((state) => state.setLargeGalOn);
+  const largeGalAnimRunning = useGalStore((state) => state.largeGalAnimRunning);
+  const setLargeGalAnimRunning = useGalStore(
+    (state) => state.setLargeGalAnimRunning
+  );
+  const loadedImages = useGalStore((state) => state.loadedImages);
+
+  //if next image to show is not loaded, wait for it to load before showing
   useEffect(() => {
-    if (!loadingAnim && animAfterLoad === "prev") {
-      handlePrevClick();
+    if (!loadingAnim) {
       setAnimAfterLoad("");
       setWaitingNr(null);
-    } else if (!loadingAnim && animAfterLoad === "next") {
-      handleNextClick();
-      setAnimAfterLoad("");
-      setWaitingNr(null);
+      if (animAfterLoad === "prev") {
+        handlePrevClick();
+      } else if (animAfterLoad === "next") {
+        handleNextClick();
+      }
     }
   }, [loadingAnim]);
 
-  const handlePrevClick = () => {
-    const prevNum = () => {
-      if (imgPrevCurrNext[imgShowing] === 0) {
-        return Object.keys(props.list).length - 1;
-      } else {
-        return imgPrevCurrNext[imgShowing] - 1;
-      }
-    };
+  //recalculate values for prev curr next
+  function calcPrevCurrNext(curr: number) {
+    setImgPrevCurrNext(
+      getPrevNextImgNum({
+        listLength: Object.keys(props.list).length,
+        currentNum: curr,
+        imgShowing: imgShowing,
+        imgPrevCurrNext: imgPrevCurrNext,
+      })
+    );
+  }
 
-    function calcPrevCurrNext() {
-      setImgPrevCurrNext(
-        getPrevNextImgNum({
-          listLength: Object.keys(props.list).length,
-          currentNum: prevNum(),
-          imgShowing: imgShowing,
-          imgPrevCurrNext: imgPrevCurrNext,
-        })
-      );
-    }
+  const handlePrevClick = () => {
+    const prevImg = imgPrevCurrNext.prev;
     
     //check if animation is not currently running and if the prev image is loaded
-    if (imgShowing === "curr" && !animInAct && loadedImages[prevNum()]) {
-      calcPrevCurrNext();
+    if (
+      imgShowing === "curr" &&
+      !largeGalAnimRunning &&
+      loadedImages[prevImg]
+    ) {
+      calcPrevCurrNext(prevImg);
       setImgShowing("curr2");
-      setAnimInAct(true);
+      setLargeGalAnimRunning(true);
     } else if (
       imgShowing === "curr2" &&
-      !animInAct &&
-      loadedImages[prevNum()]
+      !largeGalAnimRunning &&
+      loadedImages[prevImg]
     ) {
-      calcPrevCurrNext();
+      calcPrevCurrNext(prevImg);
       setImgShowing("curr");
-      setAnimInAct(true);
-    } else if (!loadedImages[prevNum()] && !animInAct) {
+      setLargeGalAnimRunning(true);
+    } else if (!loadedImages[prevImg] && !largeGalAnimRunning) {
       setLoadingAnim(true);
       setAnimAfterLoad("prev");
-      setWaitingNr(prevNum());
+      setWaitingNr(prevImg);
     }
   };
 
   const handleNextClick = () => {
-    const nextNum = () => {
-      if (imgPrevCurrNext[imgShowing] === Object.keys(props.list).length - 1) {
-        return 0;
-      } else {
-        return imgPrevCurrNext[imgShowing] + 1;
-      }
-    };
+    const nextImg = imgPrevCurrNext.next;
 
-    function calcPrevCurrNext() {
-      setImgPrevCurrNext(
-        getPrevNextImgNum({
-          listLength: Object.keys(props.list).length,
-          currentNum: nextNum(),
-          // imgPrevCurrNext[imgShowing] === Object.keys(props.list).length - 1
-          //   ? 0
-          //   : imgPrevCurrNext[imgShowing] + 1,
-          imgShowing: imgShowing,
-          imgPrevCurrNext: imgPrevCurrNext,
-        })
-      );
-    }
     //check if animation is not currently running and if the next image is loaded
-    if (imgShowing === "curr" && !animInAct && loadedImages[nextNum()]) {
-      calcPrevCurrNext();
+    if (
+      imgShowing === "curr" &&
+      !largeGalAnimRunning &&
+      loadedImages[nextImg]
+    ) {
+      calcPrevCurrNext(nextImg);
       setImgShowing("curr2");
-      setAnimInAct(true);
+      setLargeGalAnimRunning(true);
     } else if (
       imgShowing === "curr2" &&
-      !animInAct &&
-      loadedImages[nextNum()]
+      !largeGalAnimRunning &&
+      loadedImages[nextImg]
     ) {
-      calcPrevCurrNext();
+      calcPrevCurrNext(nextImg);
       setImgShowing("curr");
-      setAnimInAct(true);
-    } else if (!loadedImages[nextNum()] && !animInAct) {
+      setLargeGalAnimRunning(true);
+    } else if (!loadedImages[nextImg] && !largeGalAnimRunning) {      
       setLoadingAnim(true);
       setAnimAfterLoad("next");
-      setWaitingNr(nextNum());
+      setWaitingNr(nextImg);
     }
   };
 
   const handleClose = () => {
-    props.setLargeGal(false)
-    props.setClickedImg(null)
-  }
+    if (!largeGalAnimRunning) {
+      setLargeGalOn(false);
+      setLargeGalAnimRunning(true);
+    }
+  };
 
   const changeImgProps = {
-    splitImg: splitImg,
-    setSplitImg: setSplitImg,
-    imgPrevCurrNext: imgPrevCurrNext,
-    // currentImg: `.${styles.currImg}`,
     wrapper: WrapperRef,
     imgShowing: imgShowing,
-    loadedImages: loadedImages,
-    animInAct: animInAct,
-    setAnimInAct: setAnimInAct,
   };
 
   const GalleryOpenImgProps = {
-    largeGal: props.largeGal,
     wrapper: WrapperRef,
     background: `.${styles.background}`,
-    setSplitImg: setSplitImg,
-    splitImg: splitImg,
-    clickedImg: props.clickedImg as number,
     list: props.list,
-    imgPrevCurrNext: imgPrevCurrNext,
-    setImgPrevCurrNext: setImgPrevCurrNext,
-    loadedImages: loadedImages,
-    setLoadedImages: setLoadedImages,
     changeImgProps: changeImgProps,
     setImgShowing: setImgShowing,
-    setClickedImg: props.setClickedImg
   };
   const preloadProps = {
     class: styles.preload,
-    loadedImages: loadedImages,
-    setLoadedImages: setLoadedImages,
-    imgPrevCurrNext: imgPrevCurrNext,
-    setImgPrevCurrNext: setImgPrevCurrNext,
     list: props.list,
-    clickedImg: props.clickedImg,
     setLoadingAnim: setLoadingAnim,
     waitingNr: waitingNr,
   };
@@ -202,8 +163,7 @@ const LargeImgGallery = (props: PropsTypes): JSX.Element => {
               <IoIosArrowForward />
             </div>
           </div>
-    </div>
-    ,
+        </div>,
         document.body
       )}
     </>

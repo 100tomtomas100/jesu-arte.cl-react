@@ -3,39 +3,30 @@ import styles from "../../assets/styles/GalleryOpenImg.module.scss";
 import Cloudify from "../../utils/Cloudify";
 import { useEffect, useState } from "react";
 import useDisplayLargeGalAnim from "../../hooks/useDisplayLargeGalAnim";
-import getPrevNextImgNum from "../../utils/getPrevNextImgNum";
 import useChangeImgAnim from "../../hooks/useChangeImgAnim";
+import useStore from "../../hooks/useStore";
 
 interface PropsTypes {
-  largeGal: boolean;
   wrapper: React.MutableRefObject<HTMLDivElement | null>;
   background: string;
-  setSplitImg: React.Dispatch<React.SetStateAction<Splitting.Result | null>>;
-  splitImg: Splitting.Result | null;
-  clickedImg: number;
   list: {
     [key: string]: { [key: string]: string | number };
   };
-  imgPrevCurrNext: {
-    [key: string]: number;
-  };
-  setImgPrevCurrNext: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: number;
-    }>
-  >;
   changeImgProps: any;
-  loadedImages: any;
-  setLoadedImages: any;
   setImgShowing: React.Dispatch<React.SetStateAction<string>>;
-  setClickedImg: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const GalleryOpenImg = (props: PropsTypes): JSX.Element => {
   const [displayLargeProps, setDisplayLargeProps] = useState({});
   const [currKey, setCurrKey] = useState({ curr: 110, curr2: -110 });
   const [changeImgProps, setChangeImgProps] = useState({});
-  const [openGal, setOpenGal] = useState(false);
+
+  //store
+  const imgPrevCurrNext = useStore((state) => state.imgPrevCurrNext);
+  const largeGalOn = useStore((state) => state.largeGalOn);
+  const loadedImages = useStore((state) => state.loadedImages);
+  const setLoadedImages = useStore((state) => state.setLoadedImages);
+
 
   useDisplayLargeGalAnim({ ...displayLargeProps });
   useChangeImgAnim({ ...changeImgProps });
@@ -47,91 +38,59 @@ const GalleryOpenImg = (props: PropsTypes): JSX.Element => {
       currentImg2: `.${styles.currImg2}`,
       setCurrKey: setCurrKey,
       currKey: currKey,
-      loadedImg: props.loadedImages,
+      loadedImg: loadedImages,
     });
   }, [props.changeImgProps.imgShowing]);
-
-  useEffect(() => {
-    //set prev next curr image numbers
-    if (props.clickedImg !== null && props.list && props.largeGal) {
-      props.setImgPrevCurrNext(
-        getPrevNextImgNum({
-          listLength: Object.keys(props.list).length,
-          currentNum: props.clickedImg,
-        })
-      );
-      setOpenGal(true);
-    }
-  }, [props.clickedImg]);
 
   //for opening and closing the large gallery
   useEffect(() => {
     //set up props to open or close large gallery
-    if (
-      (props.loadedImages[props.clickedImg as number] && openGal) ||
-      !props.largeGal
-    ) {
+    if (loadedImages[imgPrevCurrNext.curr] || !largeGalOn) {
       setDisplayLargeProps({
         clickedImgClass: `.${styles.currImg}`,
         wrapper: props.wrapper,
         background: props.background,
-        clickedImgLoaded: props.loadedImages[props.clickedImg],
-        setSplitImg: props.setSplitImg,
-        splitImg: props.splitImg,
-        largeGal: props.largeGal,
+        clickedImgLoaded: loadedImages[imgPrevCurrNext.curr],
         setCurrKey: setCurrKey,
         currKey: currKey,
         imgShowing: props.changeImgProps.imgShowing,
         setImgShowing: props.setImgShowing,
-        setImgPrevCurrNext: props.setImgPrevCurrNext,
-       
       });
-      setOpenGal(false);
     }
-  }, [props.loadedImages[props.clickedImg as number], openGal, props.largeGal]);
+  }, [loadedImages[imgPrevCurrNext.curr], largeGalOn]);
 
   const handleLoaded = (num: any) => {
-    if (!props.loadedImages[num]) {
-      props.setLoadedImages({ ...props.loadedImages, [num]: true });
+    if (!loadedImages[num]) {
+      setLoadedImages({ ...loadedImages, [num]: true });
     }
   };
 
   return (
     <>
-      <div
-        className={`${styles.currImg}`}
-        key={currKey.curr}
-      >
-        {props.imgPrevCurrNext.curr > -1 ? (
+      <div className={`${styles.currImg}`} key={currKey.curr}>
+        {imgPrevCurrNext.curr > -1 ? (
           <Cloudify
-            imgTitle={
-              props.list[props.imgPrevCurrNext.curr].public_id as string
-            }
+            imgTitle={props.list[imgPrevCurrNext.curr].public_id as string}
             imgWidth={getImgLargeGallerySize({
-              clickedImgInfo: props.list[props.imgPrevCurrNext.curr],
+              clickedImgInfo: props.list[imgPrevCurrNext.curr],
             })}
             hasLoaded={() => {
-              handleLoaded(props.imgPrevCurrNext.curr);
+              handleLoaded(imgPrevCurrNext.curr);
             }}
           />
         ) : (
           ""
         )}
       </div>
-      <div
-        className={`${styles.currImg2}`}
-        key={currKey.curr2}
-      >
-        {props.imgPrevCurrNext.curr2 > -1 ? (
+      <div className={`${styles.currImg2}`} key={currKey.curr2}>
+        {imgPrevCurrNext.curr2 > -1 ? (
           <Cloudify
-            imgTitle={
-              props.list[props.imgPrevCurrNext.curr2].public_id as string
-            }
+            imgTitle={props.list[imgPrevCurrNext.curr2].public_id as string}
             imgWidth={getImgLargeGallerySize({
-              clickedImgInfo: props.list[props.imgPrevCurrNext.curr2],
+              clickedImgInfo: props.list[imgPrevCurrNext.curr2],
             })}
             hasLoaded={() => {
-              handleLoaded(props.imgPrevCurrNext.curr2);
+              handleLoaded(imgPrevCurrNext.curr2);
             }}
           />
         ) : (

@@ -8,8 +8,9 @@ interface PropsTypes {
 }
 
 const useGalleryAnim = (props: PropsTypes) => {
+  
   useEffect(() => {
-      if (props.loaded) {      
+      if (props.loaded) {     
         let ctx: gsap.Context = gsap.context(() => {
           const tl: gsap.core.Timeline = gsap.timeline({
           });

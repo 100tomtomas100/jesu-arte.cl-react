@@ -1,49 +1,43 @@
 import { useState, useEffect } from "react";
 import Cloudify from "../../utils/Cloudify";
 import getImgLargeGallerySize from "../../utils/getImgLargeGallerySize";
+import useGalStore from "../../hooks/useStore";
 
 interface PropsTypes {
   class: string;
-  loadedImages: any;
-  setLoadedImages: any;
-  imgPrevCurrNext: {
-    [key: string]: number;
-  };
-  setImgPrevCurrNext: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: number;
-    }>
-  >;
   list: {
     [key: string]: { [key: string]: string | number };
   };
-  clickedImg: number | null;
   setLoadingAnim: React.Dispatch<React.SetStateAction<boolean>>;
   waitingNr: number | null;
 }
 
 const PreloadImg = (props: PropsTypes): JSX.Element => {
   const [preloadImages, setPreloadImages] = useState<any>([]);
+
+  //store
+  const imgPrevCurrNext = useGalStore((state) => state.imgPrevCurrNext);
+  const loadedImages = useGalStore((state) => state.loadedImages);
+  const setLoadedImages = useGalStore((state) => state.setLoadedImages);
+
   useEffect(() => {
     if (
-      Object.keys(props.imgPrevCurrNext).length > 0 &&
-      props.loadedImages[props.clickedImg as number]
+      Object.keys(imgPrevCurrNext).length > 0 &&
+      loadedImages[imgPrevCurrNext.curr]
     ) {
       //check if images of prev and next are already loaded and set props for preloading
       const checkLoad = () => {
-        let preload = [props.imgPrevCurrNext.prev, props.imgPrevCurrNext.next];
-        const length = Object.keys(props.loadedImages).length;
+        let preload = [imgPrevCurrNext.prev, imgPrevCurrNext.next];
+        const length = Object.keys(loadedImages).length;
 
         for (let i = 0; i < length; i++) {
           if (
-            props.imgPrevCurrNext.prev ===
-            Number(Object.keys(props.loadedImages)[i])
+            imgPrevCurrNext.prev === Number(Object.keys(loadedImages)[i])
           ) {
             preload.shift();
           }
           if (
-            props.imgPrevCurrNext.next ===
-            Number(Object.keys(props.loadedImages)[i])
+            imgPrevCurrNext.next === Number(Object.keys(loadedImages)[i])
           ) {
             preload.pop();
           }
@@ -64,18 +58,15 @@ const PreloadImg = (props: PropsTypes): JSX.Element => {
       };
       setPreloadImages(checkLoad());
     }
-  }, [props.imgPrevCurrNext, props.loadedImages[props.clickedImg as number]]);
+  }, [imgPrevCurrNext, loadedImages[imgPrevCurrNext.curr]]);
 
   const handleLoaded = (num: any) => {
-    if (!props.loadedImages[num]) {
-      props.setLoadedImages({ ...props.loadedImages, [num]: true });
+    if (!loadedImages[num]) {
+      setLoadedImages({ ...loadedImages, [num]: true });
       if (props.waitingNr === Number(num)) {
         props.setLoadingAnim(false);
       }
     }
-    // console.log(num)
-    // console.log(props.waitingNr)
-    // console.log(props)
   };
   return (
     <div>
