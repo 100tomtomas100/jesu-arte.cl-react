@@ -1,8 +1,9 @@
 import "./App.scss";
 import Header from "./layouts/Header";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutUs from "./pages/AboutUs";
 import SideNav from "./components/navBars/SideNav";
+import { Blog } from "./pages/Blog";
 import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +12,7 @@ import Footer from "./layouts/Footer";
 import MobileNav from "./components/navBars/MobileNav";
 import Gallery from "./pages/Gallery";
 import AnimContext from "./context/AnimContext";
+import PostPage from "./components/Blog/PostPage";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -41,6 +43,8 @@ function App(): JSX.Element {
             <Routes>
               <Route path="/" element={<AboutUs />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:blogId" element={<PostPage/>} />
             </Routes>
             <Footer />
           </div>

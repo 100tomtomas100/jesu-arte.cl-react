@@ -27,4 +27,19 @@ const useGalStore = create<GalStoreProps>((set) => ({
   setLoadedImages: (input) => set(() => ({ loadedImages: input })),
 }));
 
+
+interface BlogStoreProps{
+  postsToLoad: number
+  setPostsToLoad: () => void
+  postData: {[key:string]:any}
+  setPostData: (input: {[key:string]: any}) => void
+}
+
+export const useBlogStore = create<BlogStoreProps>((set) => ({
+  postsToLoad: 2,
+  setPostsToLoad: () => set((state) => ({postsToLoad: state.postsToLoad + 2})),
+  postData: {},
+  setPostData: (input) => set(() => ({postData: input})),
+}))
+
 export default useGalStore;

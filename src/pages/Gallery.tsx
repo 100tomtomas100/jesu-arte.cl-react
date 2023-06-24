@@ -64,34 +64,32 @@ const Gallery = (): JSX.Element => {
   };
 
   return (
-    <>
-      <div className={styles.gallery} ref={wrapperRef}>
-        <div className={styles.columnedWrapper}>
-          <Columned className={columnedStyles}>
-            {Object.keys(list).map((index) => {
-              return (
-                <div
-                  className={`${styles.image}`}
-                  key={list[index].public_id}
-                  onClick={handleClick}
-                  data-number={`${index}`}
-                >
-                  <Cloudify
-                    imgTitle={list[index].public_id as string}
-                    hasLoaded={
-                      Object.keys(list).length - 1 === Number(index)
-                        ? refresh
-                        : ""
-                    }
-                  />
-                </div>
-              );
-            })}
-          </Columned>
-        </div>
-        <LargeImgGallery {...{list}} />
+    <div className={styles.gallery} ref={wrapperRef}>
+      <div className={styles.columnedWrapper}>
+        <Columned className={columnedStyles}>
+          {Object.keys(list).map((index) => {
+            return (
+              <div
+                className={`${styles.image}`}
+                key={list[index].public_id}
+                onClick={handleClick}
+                data-number={`${index}`}
+              >
+                <Cloudify
+                  imgTitle={list[index].public_id as string}
+                  hasLoaded={
+                    Object.keys(list).length - 1 === Number(index)
+                      ? refresh
+                      : ""
+                  }
+                />
+              </div>
+            );
+          })}
+        </Columned>
       </div>
-    </>
+      <LargeImgGallery {...{ list }} />
+    </div>
   );
 };
 

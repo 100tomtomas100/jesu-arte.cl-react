@@ -1,0 +1,19 @@
+@import "config";
+
+.container{
+    width: 90%;
+    min-height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    will-change: transform;
+    .title{
+        display: flex;
+        justify-content: space-between;
+    }
+    .date{
+        display:flex;
+        align-items: flex-end;
+    }
+}

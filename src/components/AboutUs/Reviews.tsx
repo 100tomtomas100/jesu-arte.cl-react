@@ -9,7 +9,7 @@ const Reviews = ({className}:{className: string}): JSX.Element => {
   const reviews: { [key: string]: unknown }[] = useDB();
   const [showMore, setShowMore] = useState<{ [key: number]: boolean }>({});
   const [windowWidth, setWindowWidth] = useState<number>(0)  
-  
+
 //check window width to change number of reviews shown 
   useEffect(() => {    
     const handleResize = ():void=> {
