@@ -34,7 +34,7 @@
       .date {
         display: flex;
         font-size: 16px;
-        justify-content: end;
+        justify-content: flex-end;
       }
     }
 
@@ -58,6 +58,10 @@
         transition: all 0.4s ease;
         transform: scale(1.1) translate3d(0, 0, 0);
         background-color: black;
+      }
+      &:active {
+        transition: all 0.2s ease;
+        transform: scale(0.8) translate3d(0, 0, 0);
       }
       h2 {
         font-size: 20px;

@@ -13,6 +13,7 @@ import MobileNav from "./components/navBars/MobileNav";
 import Gallery from "./pages/Gallery";
 import AnimContext from "./context/AnimContext";
 import PostPage from "./components/Blog/PostPage";
+import ContactUs from "./pages/ContactUs";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -45,6 +46,7 @@ function App(): JSX.Element {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:blogId" element={<PostPage/>} />
+              <Route path="/contact-us" element={<ContactUs />} />
             </Routes>
             <Footer />
           </div>
