@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useLayoutEffect, useState, useContext, useRef } from "react";
 import styles from "../assets/styles/ContactUs.module.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Email from "../components/Contact-us/Email";
+import AnimContext from "../context/AnimContext";
+import useContactUsAnim from "../hooks/useContactUsAnim";
+
 
 type Inputs = {
   name: string;
@@ -17,6 +19,19 @@ const ContactUs = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+  const { footerTimeline } = useContext(AnimContext);
+  const containerWrapperRef = useRef<HTMLDivElement>(null)
+
+  useContactUsAnim({
+    containerWrapperRef: containerWrapperRef,
+    containerClass: `.${styles.container}`
+  });
+
+  useLayoutEffect(() => {
+    //recalculate footer scrollTrigger start and finish
+    footerTimeline?.scrollTrigger.refresh();
+  },[])
+
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setFormStatus("Enviando...");
@@ -33,7 +48,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div>
+    <div ref={containerWrapperRef} className={styles.containerWrapper}>
       <div className={styles.container}>
         <form
           onSubmit={handleSubmit(onSubmit)}

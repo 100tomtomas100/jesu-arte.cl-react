@@ -1,0 +1,25 @@
+import React, { useLayoutEffect } from "react";
+import gsap  from "gsap";
+
+interface PropsTypes {
+  containerWrapperRef: React.MutableRefObject<HTMLDivElement | null>;
+  containerClass: string;
+}
+
+const useContactUsAnim = (props: PropsTypes) => {
+  useLayoutEffect(() => {
+    console.log(props);
+    let ctx: gsap.Context = gsap.context(() => {
+      const tl: gsap.core.Timeline = gsap.timeline({});
+      tl.from(props.containerClass, {
+        scale: 0,
+        duration: 0.7,
+        autoAlpha: 0,
+      });
+    }, (props.containerWrapperRef as any).current);
+
+    return () => ctx.revert(); // <- CLEANUP!
+  }, []);
+};
+
+export default useContactUsAnim;

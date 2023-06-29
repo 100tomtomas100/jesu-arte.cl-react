@@ -1,78 +1,80 @@
 @import "config";
-
-.container {
+.containerWrapper {
   height: 100vh;
   background-color: $light-color;
   padding-top: 50px;
   padding-left: 50px;
-  form {
-    display: grid;
+  .container {
     width: 40%;
-    gap: 30px;
-    .inputContainer {
+    form {
       display: grid;
-      label {
-        padding-bottom: 10px;
-        font-weight: 500;
-      }
-      input {
-        height: 30px;
-        border-radius: 5px;
-        font-size: 16px;
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-      .inputError {
-        color: red;
-      }
-      textArea {
-        resize: none;
-        height: 200px;
-        font-size: 16px;
-        border-radius: 10px;
-        padding: 5px;
-      }
-    }
-    .buttonWrapper {
-      display: flex;
-      justify-content: center;
-      height: 40px;
-      button {
-        will-change: transform;
-        height: 100%;
-        width: 40%;
-        border-radius: 5px;
-        font-size: 18px;
-        font-weight: 600;
-        text-align: center;
-        &:hover {
-          transition: all 0.4s ease;
-          transform: scale(1.1) translate3d(0, 0, 0);
+      width: 100%;
+      gap: 30px;
+      .inputContainer {
+        display: grid;
+        label {
+          padding-bottom: 10px;
+          font-weight: 500;
         }
-        &:active {
-          transition: all 0.2s ease;
-          transform: scale(0.8) translate3d(0, 0, 0);
+        input {
+          height: 30px;
+          border-radius: 5px;
+          font-size: 16px;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+        .inputError {
+          color: red;
+        }
+        textArea {
+          resize: none;
+          height: 200px;
+          font-size: 16px;
+          border-radius: 10px;
+          padding: 5px;
         }
       }
+      .buttonWrapper {
+        display: flex;
+        justify-content: center;
+        height: 40px;
+        button {
+          will-change: transform;
+          height: 100%;
+          width: 40%;
+          border-radius: 5px;
+          font-size: 18px;
+          font-weight: 600;
+          text-align: center;
+          &:hover {
+            transition: all 0.4s ease;
+            transform: scale(1.1) translate3d(0, 0, 0);
+          }
+          &:active {
+            transition: all 0.2s ease;
+            transform: scale(0.8) translate3d(0, 0, 0);
+          }
+        }
+      }
     }
-  }
-  .formDeliveryMsgContainer {
-    height: 100%;
-    width: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    will-change: transform;
-    .formDeliveryMsg {      
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .formDeliveryMsgContainer {
       height: 100%;
-      h2 {        
-        text-align: center;
-        line-height: 80px;
-        font-size: 25px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      will-change: transform;
+      .formDeliveryMsg {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        h2 {
+          text-align: center;
+          line-height: 80px;
+          font-size: 25px;
+        }
       }
     }
   }
