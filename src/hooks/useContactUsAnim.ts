@@ -8,7 +8,6 @@ interface PropsTypes {
 
 const useContactUsAnim = (props: PropsTypes) => {
   useLayoutEffect(() => {
-    console.log(props);
     let ctx: gsap.Context = gsap.context(() => {
       const tl: gsap.core.Timeline = gsap.timeline({});
       tl.from(props.containerClass, {
