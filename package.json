@@ -60,6 +60,7 @@
   "devDependencies": {
     "@types/google.maps": "^3.51.0",
     "@types/locomotive-scroll": "^4.1.0",
-    "@types/splitting": "^1.0.0"
+    "@types/splitting": "^1.0.0",
+    "@vercel/node": "^2.15.3"
   }
 }

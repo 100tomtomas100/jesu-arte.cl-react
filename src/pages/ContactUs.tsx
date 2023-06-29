@@ -21,16 +21,13 @@ const ContactUs = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setFormStatus("Enviando...");
     console.log(data);
-    let response = await fetch(
-      "https://jesu-arte-cl-react-server.vercel.app/contact",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    let response = await fetch("http://localhost:5000/api/submitForm", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(data),
+    });
     let result = await response.json();
     setFormStatus(result.status);
   };
