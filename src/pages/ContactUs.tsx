@@ -21,7 +21,7 @@ const ContactUs = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setFormStatus("Enviando...");
     console.log(data);
-    let response = await fetch("http://localhost:3002/api/submitForm", {
+    let response = await fetch("https://www.jesu-arte.cl/api/submitForm", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

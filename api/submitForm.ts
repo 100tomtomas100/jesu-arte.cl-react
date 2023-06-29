@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from "nodemailer";
  
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default function submitForm(req: VercelRequest, res: VercelResponse) {
   console.log(req.body);
   const contactEmail = nodemailer.createTransport({
     service: "gmail",
