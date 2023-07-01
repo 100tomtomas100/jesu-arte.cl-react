@@ -1,6 +1,7 @@
 @import "config";
 .navbarWrapper {
   width: 100%;
+  outline: 1px solid $light-color;
   .navbar {
     width: 100%;
     height: 100%;

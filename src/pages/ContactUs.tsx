@@ -24,7 +24,7 @@ const ContactUs = () => {
 
   useContactUsAnim({
     containerWrapperRef: containerWrapperRef,
-    containerClass: `.${styles.container}`
+    containerClass: `.${styles.inputAnim}`
   });
 
   useLayoutEffect(() => {
@@ -54,7 +54,7 @@ const ContactUs = () => {
           noValidate
           style={{ display: `${formStatus ? "none" : "grid"}` }}
         >
-          <div className={styles.inputContainer}>
+          <div className={`${styles.inputContainer} ${styles.inputAnim}`}>
             <label htmlFor="name">Nombre</label>
             <input
               id="name"
@@ -68,7 +68,7 @@ const ContactUs = () => {
               </p>
             )}
           </div>
-          <div className={styles.inputContainer}>
+          <div className={`${styles.inputContainer} ${styles.inputAnim}`}>
             <label htmlFor="email">Correo</label>
             <input
               id="email"
@@ -94,7 +94,7 @@ const ContactUs = () => {
               </p>
             )}
           </div>
-          <div className={styles.inputContainer}>
+          <div className={`${styles.inputContainer} ${styles.inputAnim}`}>
             <label htmlFor="message">Mensaje</label>
             <textarea
               id="message"
@@ -122,7 +122,7 @@ const ContactUs = () => {
               </p>
             )}
           </div>
-          <div className={styles.buttonWrapper}>
+          <div className={`${styles.buttonWrapper} ${styles.inputAnim}`}>
             <button type="submit">Enviar</button>
           </div>
         </form>

@@ -10,7 +10,8 @@ const useContactUsAnim = (props: PropsTypes) => {
   useLayoutEffect(() => {
     let ctx: gsap.Context = gsap.context(() => {
       const tl: gsap.core.Timeline = gsap.timeline({});
-      tl.from(props.containerClass, {
+        tl.from(props.containerClass, {
+          stagger: 0.2,
         scale: 0,
         duration: 0.7,
         autoAlpha: 0,

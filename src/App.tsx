@@ -14,6 +14,7 @@ import Gallery from "./pages/Gallery";
 import AnimContext from "./context/AnimContext";
 import PostPage from "./components/Blog/PostPage";
 import ContactUs from "./pages/ContactUs";
+import HowBuy from "./pages/HowBuy";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -35,7 +36,9 @@ function App(): JSX.Element {
 
   return (
     <div className="App" id="App">
-      <AnimContext.Provider value={{smootherOk, footerTimeline, setFooterTimeline}}>
+      <AnimContext.Provider
+        value={{ smootherOk, footerTimeline, setFooterTimeline }}
+      >
         <SideNav />
         <MobileNav />
         <div id="smooth-wrapper">
@@ -45,8 +48,9 @@ function App(): JSX.Element {
               <Route path="/" element={<AboutUs />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:blogId" element={<PostPage/>} />
+              <Route path="/blog/:blogId" element={<PostPage />} />
               <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/how-buy" element={<HowBuy />} />
             </Routes>
             <Footer />
           </div>

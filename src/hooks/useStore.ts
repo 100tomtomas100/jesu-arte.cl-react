@@ -42,4 +42,20 @@ export const useBlogStore = create<BlogStoreProps>((set) => ({
   setPostData: (input) => set(() => ({postData: input})),
 }))
 
+interface BuyProps {
+  shoppingCart: { [key: string]: any };
+  counter: number;
+  setShoppingCart: (input: { [key: string]: any }) => void;
+}
+
+export const useBuyStore = create<BuyProps>((set) => ({
+  shoppingCart: {},
+  counter: 0,
+  setShoppingCart: (input) =>
+    set((state) => ({
+      shoppingCart: { ...state.shoppingCart, [state.counter]: input },
+      counter: state.counter + 1,
+    })),
+}));
+
 export default useGalStore;
