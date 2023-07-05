@@ -1,5 +1,32 @@
 @import "config";
 
-.container{
-    outline: 1px solid $light-color
+.container {
+  outline: 1px solid $light-color;
+  min-height: 90vh;
+  background-color: $light-color;
+  .shoppingCartNumber {
+    height: 50px;
+    width: 100%;
+    display: grid;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 50px;    
+    .shoppingNumber{
+      will-change: transform;
+      text-align: end;
+      margin-bottom: -15px;
+    }
+    .shoppingCartImg{
+      will-change: transform;
+      height: 30px;
+      width: 30px;      
+      img{
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  .shoppingCart, .buyForm {
+    min-height: calc(90vh - 50px);
+  }
 }

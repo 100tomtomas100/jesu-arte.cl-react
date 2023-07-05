@@ -45,17 +45,21 @@ export const useBlogStore = create<BlogStoreProps>((set) => ({
 interface BuyProps {
   shoppingCart: { [key: string]: any };
   counter: number;
-  setShoppingCart: (input: { [key: string]: any }) => void;
+  setShoppingCart: (input: { [key: string]: any }, fromLocal?: boolean) => void;
+  formOpen: boolean;
+  setFormOpen: (input: boolean) => void
 }
 
 export const useBuyStore = create<BuyProps>((set) => ({
   shoppingCart: {},
   counter: 0,
-  setShoppingCart: (input) =>
+  setShoppingCart: (input, fromLocal) =>
     set((state) => ({
-      shoppingCart: { ...state.shoppingCart, [state.counter]: input },
-      counter: state.counter + 1,
+      shoppingCart: fromLocal ? input : { ...state.shoppingCart, [state.counter]: input },
+      counter: fromLocal? 1 + Number(Object.keys(input)[Object.keys(input).length-1]) :state.counter + 1,
     })),
+  formOpen: false,
+  setFormOpen: (input) => set(() => ({formOpen: input}))
 }));
 
 export default useGalStore;

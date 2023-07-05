@@ -1,18 +1,18 @@
-const prices: {[key: string]: any} = {
+const prices: { [key: string]: any } = {
   pencil: {
-    cm12_x_cm12: "$5",
-    cm24_x_cm24: "$10",
-    cm50_x_cm50: "$20",
+    s12cm_x_12cm: 5,
+    s24cm_x_24cm: 10,
+    s50cm_x_50cm: 20,
   },
   aquarelle: {
-    cm12_x_cm12: "$10",
-    cm24_x_cm24: "$20",
-    cm50_x_cm50: "$35",
+    s12cm_x_12cm: 10,
+    s24cm_x_24cm: 20,
+    s50cm_x_50cm: 35,
   },
   marker: {
-    cm12_x_cm12: "$7",
-    cm24_x_cm24: "$14",
-    cm50_x_cm50: "$25",
+    s12cm_x_12cm: 7,
+    s24cm_x_24cm: 14,
+    s50cm_x_50cm: 25,
   },
 };
 
