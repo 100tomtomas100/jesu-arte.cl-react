@@ -31,6 +31,34 @@ const ShoppingCart = () => {
   const addItem = () => {
     setFormOpen(true)    
   }
+
+  const pay = async () => {
+    try {
+      // await fetch("http://localhost:3003/api/payment", {
+      await fetch("https://www.jesu-arte.cl/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(shoppingCart),
+      })
+        .then(async (res: Response) => {
+          if (res.ok) return res.json();
+          const json = await res.json();
+          return await Promise.reject(json);
+        })
+        .then(({ url }) => {
+          window.location = url;
+          // console.log(url)
+        });
+    } catch (err: any){
+      console.error(err.error)
+    }
+
+    // let result = await response.json();
+    // console.log(result.status);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.allItems}>
@@ -42,7 +70,6 @@ const ShoppingCart = () => {
           const imgTech =
             shoppingCart[item].technique?.substr(0, 1).toUpperCase() +
             shoppingCart[item].technique?.substr(1);
-          console.log(imgSize);
 
           return (
             <div className={styles.item} key={item}>
@@ -76,8 +103,8 @@ const ShoppingCart = () => {
         </div>
         <div className={styles.buttons}>
           <button onClick={() => addItem()}>Add More</button>
-          <button>Pay</button>
-        </div>        
+          <button onClick={() => pay()}>Pay</button>
+        </div>
       </div>
     </div>
   );
