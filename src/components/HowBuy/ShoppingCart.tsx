@@ -34,11 +34,11 @@ const ShoppingCart = () => {
 
   const pay = async () => {
     try {
-      // await fetch("http://localhost:3003/api/payment", {
+      // await fetch("http://localhost:3001/api/payment", {
       await fetch("https://www.jesu-arte.cl/api/payment", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(shoppingCart),
       })
@@ -103,7 +103,7 @@ const ShoppingCart = () => {
         </div>
         <div className={styles.buttons}>
           <button onClick={() => addItem()}>Add More</button>
-          <button onClick={() => pay()}>Pay</button>
+          <button onClick={pay}>Pay</button>
         </div>
       </div>
     </div>
