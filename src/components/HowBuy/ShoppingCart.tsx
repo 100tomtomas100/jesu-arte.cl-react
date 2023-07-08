@@ -34,8 +34,8 @@ const ShoppingCart = () => {
 
   const pay = async () => {
     try {
-      // await fetch("http://localhost:3001/api/payment", {
-      await fetch("https://www.jesu-arte.cl/api/payment", {
+      await fetch("http://localhost:3001/api/payment", {
+      // await fetch("https://www.jesu-arte.cl/api/payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
