@@ -48,7 +48,7 @@ const ShoppingCart = () => {
           return await Promise.reject(json);
         })
         .then(({ url }) => {
-          window.location = url;
+          window.location.href = url;
           // console.log(url)
         });
     } catch (err: any){
