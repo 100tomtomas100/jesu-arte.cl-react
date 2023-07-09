@@ -56,7 +56,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
       case "payment_intent.succeeded":
         console.log("success2");
         // await fetch("http://localhost:3001/api/submitForm", {
-        await fetch("https://www.jesu-arte.cl/api/submitForm", {
+        fetch("https://www.jesu-arte.cl/api/submitForm", {
           method: "POST",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
