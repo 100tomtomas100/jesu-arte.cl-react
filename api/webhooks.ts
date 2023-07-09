@@ -8,28 +8,7 @@ export const config = {
   },
 };
 
-const allowCors =
-  (fn: any) => async (req: VercelRequest, res: VercelResponse) => {
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    // another common pattern
-    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-    );
-    if (req.method === "OPTIONS") {
-      res.status(200).end();
-      return;
-    }
-    return await fn(req, res);
-  };
-
-async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // check the request method and ensure you only accept POST requests.
   if (req.method === "POST") {
     let event: { [key: string]: any };
@@ -73,5 +52,3 @@ async function handler(req: VercelRequest, res: VercelResponse) {
     //   console.log(event.type)
   }
 }
-
-export default handler;
