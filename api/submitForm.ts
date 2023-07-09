@@ -18,6 +18,7 @@ export default function submitForm(req: VercelRequest, res: VercelResponse) {
     }
   });
 
+
   if (req.method === "POST") {
     const name = req.body.name;
     const email = req.body.email;
