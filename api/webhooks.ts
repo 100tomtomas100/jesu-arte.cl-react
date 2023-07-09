@@ -43,8 +43,8 @@ async function handler(req: VercelRequest, res: VercelResponse) {
       event = stripe.webhooks.constructEvent(
         requestBuffer.toString(), // Stringify the request for the Stripe library
         signature,
-        // "whsec_f52710d6bd706808f084fdfa36984a04b4416d580d7b35651cf2dac764ad29be" // you get this secret when you register a new webhook endpoint
-        "whsec_4KTiw6WXJTA2Uxn6UhtipDm7LbIHGrC4"
+        "whsec_f52710d6bd706808f084fdfa36984a04b4416d580d7b35651cf2dac764ad29be" // you get this secret when you register a new webhook endpoint
+        // "whsec_4KTiw6WXJTA2Uxn6UhtipDm7LbIHGrC4"
       );
       // you can now safely work with the request. The event returned is the parsed request body.
         // res.send(200);
@@ -56,7 +56,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
       case "payment_intent.succeeded":
         console.log("success2");
         // await fetch("http://localhost:3001/api/submitForm", {
-        await fetch("https://jesu-arte.cl/api/submitForm", {
+        await fetch("https://www.jesu-arte.cl/api/submitForm", {
           method: "POST",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
