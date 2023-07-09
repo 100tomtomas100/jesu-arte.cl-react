@@ -62,9 +62,9 @@ async function handler(req: VercelRequest, res: VercelResponse) {
             "Content-Type": "application/json;charset=utf-8",
           },
           body: JSON.stringify({
-            name: "buy buy",
+            name: "tiptoptip",
             email: "someemail@gmail.com",
-            message: "somebody bought something",
+            message: "tralalalalalala",
           }),
         });
         
