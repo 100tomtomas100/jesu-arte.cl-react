@@ -54,8 +54,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         //get image urls
         let imgUrls: {}[] = [];
         const user = event.data.object.metadata.user;
-        // for (let i = 0; (purchasedItems as string[]).length > i; i++){
-        for (let i = 0; 3 > i; i++) {
+        for (let i = 0; (purchasedItems as string[]).length > i; i++){
+        // for (let i = 0; 3 > i; i++) {
           const myRef = ref(storage, `temp/${user}/${i}.png`);
           const downloadUrl = await getDownloadURL(myRef);
           imgUrls.push({filename: `${i+1}.png`, path: downloadUrl})
