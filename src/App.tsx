@@ -15,6 +15,7 @@ import AnimContext from "./context/AnimContext";
 import PostPage from "./components/Blog/PostPage";
 import ContactUs from "./pages/ContactUs";
 import HowBuy from "./pages/HowBuy";
+import SuccessfulPayment from "./components/HowBuy/SuccessfulPayment";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -51,6 +52,7 @@ function App(): JSX.Element {
               <Route path="/blog/:blogId" element={<PostPage />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/how-buy" element={<HowBuy />} />
+              <Route path="/how-buy/successful-payment/:session_id" element={<SuccessfulPayment />} />
             </Routes>
             <Footer />
           </div>

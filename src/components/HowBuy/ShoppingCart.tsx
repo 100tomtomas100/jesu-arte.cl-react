@@ -1,5 +1,10 @@
 import { useBuyStore } from "../../hooks/useStore";
 import styles from "../../assets/styles/ShoppingCart.module.scss";
+import { storage } from "../../utils/firebase";
+import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
+
+// import image from "../../assets/images/instagram.png"
+
 
 const ShoppingCart = () => {
   //store
@@ -7,6 +12,8 @@ const ShoppingCart = () => {
   const setShoppingCart = useBuyStore((state) => state.setShoppingCart);
   const formOpen = useBuyStore((state) => state.formOpen)
   const setFormOpen = useBuyStore((state) => state.setFormOpen)
+
+  console.log(shoppingCart)
 
   const totalPrice = () => {
     const allKeys = Object.keys(shoppingCart)
@@ -33,14 +40,36 @@ const ShoppingCart = () => {
   }
 
   const pay = async () => {
+    const shoppingCartIds = Object.keys(shoppingCart)
+    const userId = `user${(new Date()).getTime()}${shoppingCart[shoppingCartIds[0]].image.substr(50, 20)}`
+    const imgCount = Object.keys(shoppingCart).length
+
     try {
+      let imgURLs = {};
+      for (let i = 0; i < imgCount; i++) {
+        const image = shoppingCart[shoppingCartIds[i]].image
+        const storageRef = ref(storage, `temp/${userId}/${i}.png`);
+        uploadString(storageRef as StorageReference, image, 'data_url').then((snapshot) => {
+          console.log('Uploaded a base64url string!', snapshot);
+          getDownloadURL(snapshot.ref).then((downloadURL) => {
+            imgURLs = { ...imgURLs, [shoppingCartIds[i]]: downloadURL }
+            console.log('File available at', downloadURL);
+            console.log(imgURLs)
+          });
+        });
+      }
+
+      const purchaseData = { shoppingCart, user: userId, imgUrls: imgURLs }
+      console.log(purchaseData)
+
+      // redirect to payment
       // await fetch("http://localhost:3001/api/payment", {
-      await fetch("https://www.jesu-arte.cl/api/payment", {
+        await fetch("https://www.jesu-arte.cl/api/payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(shoppingCart),
+        body: JSON.stringify(purchaseData),
       })
         .then(async (res: Response) => {
           if (res.ok) return res.json();

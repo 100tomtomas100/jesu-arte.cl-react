@@ -23,6 +23,7 @@ export default function submitForm(req: VercelRequest, res: VercelResponse) {
     const name = req.body.name;
     const email = req.body.email;
     const message = req.body.message;
+    const attachments = req.body.attachments
     const mail = {
       from: `Formulario de contacto <contacto@jesu-arte.cl>`,
       to: "jesu.arte.cl@gmail.com",
@@ -30,6 +31,7 @@ export default function submitForm(req: VercelRequest, res: VercelResponse) {
       html: `<p>Nombre: ${name}</p>
              <p>Correo: ${email}</p>
              <p>Mensaje: ${message}</p>`,
+      attachments: attachments
     };
     contactEmail.sendMail(mail, (error) => {
       if (error) {

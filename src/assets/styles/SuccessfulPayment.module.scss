@@ -1,0 +1,36 @@
+@import "config";
+
+.container{
+    height: 100vh;
+    background-color: $light-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .loading{
+        width: 100px;
+        height: 100px;
+        font-size: 100px;
+        color: $dark-color;
+        animation: rotate 1s infinite ease-out;
+    }
+    .text{
+        width: 30%;
+        height: 50%;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 600;
+        color: $dark-color;
+    }
+    .customerDetails{
+        color: black;
+    }
+}
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}

@@ -51,14 +51,17 @@ const allowCors =
 async function payment(req: VercelRequest, res: VercelResponse) {
   if (req.method === "POST") {
     try {
+      // console.log(Object.keys(req.body.shoppingCart))
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         mode: "payment",
-        success_url: "https://www.jesu-arte.cl",
+        success_url: "https://www.jesu-arte.cl/api/payment/success?session_id={CHECKOUT_SESSION_ID}",
+        // success_url:
+        //   "http://localhost:3000/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
         cancel_url: "https://www.jesu-arte.cl/contactus",
-        line_items: Object.keys(req.body).map((item: any) => {
-          const tech = req.body[item].technique;
-          const size = req.body[item].size;
+        line_items: Object.keys(req.body.shoppingCart).map((item: any) => {
+          const tech = req.body.shoppingCart[item].technique;
+          const size = req.body.shoppingCart[item].size;
           const price = prices[tech][size];
           return {
             price_data: {
@@ -73,13 +76,28 @@ async function payment(req: VercelRequest, res: VercelResponse) {
             quantity: 1,
           };
         }),
+        metadata: {
+          user: req.body.user
+        },
+        shipping_address_collection: {
+          allowed_countries: ["CL", "AR"],
+        },
       });
       res.json({ url: session.url });
     } catch (e) {
       res.status(500).json({ error: e});
     }
+    //get the email and name of the customer for the successful payment page
+  } else if (req.method === "GET") {
+    const session = await stripe.checkout.sessions.retrieve(
+      req.query.session_id as string
+    );
+    const email = session.customer_details?.email
+    const name = session.customer_details?.name
+    res.json({name: name, email: email});    
   }
 }
+
 
 export default allowCors(payment);
 // export default payment
