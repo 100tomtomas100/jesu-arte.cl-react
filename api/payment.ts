@@ -55,7 +55,7 @@ async function payment(req: VercelRequest, res: VercelResponse) {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         mode: "payment",
-        success_url: "https://www.jesu-arte.cl/api/payment/success?session_id={CHECKOUT_SESSION_ID}",
+        success_url: "https://www.jesu-arte.cl/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
         // success_url:
         //   "http://localhost:3000/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
         cancel_url: "https://www.jesu-arte.cl/contactus",
