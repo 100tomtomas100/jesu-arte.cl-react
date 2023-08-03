@@ -16,6 +16,7 @@ const SuccessfulPayment = () => {
         // await fetch(
         //   `http://localhost:3001/api/payment?session_id=${session_id}`,
         //   {
+        //tttrrrrr
         await fetch(`https://www.jesu-arte.cl/api/payment?session_id=${session_id}`, {
             method: "GET",
             headers: {
