@@ -10,7 +10,6 @@ const SuccessfulPayment = () => {
   let { session_id } = useParams();
 
   useEffect(() => {
-    console.log(session_id);
     (async () => {
       try {
         // await fetch(
