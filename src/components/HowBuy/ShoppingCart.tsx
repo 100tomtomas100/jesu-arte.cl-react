@@ -3,9 +3,6 @@ import styles from "../../assets/styles/ShoppingCart.module.scss";
 import { storage } from "../../utils/firebase";
 import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
 
-// import image from "../../assets/images/instagram.png"
-
-
 const ShoppingCart = () => {
   //store
   const shoppingCart = useBuyStore((state) => state.shoppingCart);
@@ -13,17 +10,17 @@ const ShoppingCart = () => {
   const formOpen = useBuyStore((state) => state.formOpen)
   const setFormOpen = useBuyStore((state) => state.setFormOpen)
 
-  console.log(shoppingCart)
-
+  //total price for shopping cart 
   const totalPrice = () => {
     const allKeys = Object.keys(shoppingCart)
-    let total = 0
+    let total: number = 0
     allKeys.map(key => {
       total += shoppingCart[key].price
     })
     return total
   }
 
+  //remove single item from shopping cart 
   const removeItem = (item: string) => {
     const copy = { ...shoppingCart };
     delete copy[item];
@@ -35,32 +32,30 @@ const ShoppingCart = () => {
     setShoppingCart(copy, true);
   };
 
+  //open form for new item to add to shopping cart
   const addItem = () => {
     setFormOpen(true)    
   }
 
+  //pay for the shopping cart
   const pay = async () => {
     const shoppingCartIds = Object.keys(shoppingCart)
     const userId = `user${(new Date()).getTime()}${shoppingCart[shoppingCartIds[0]].image.substr(50, 20)}`
     const imgCount = Object.keys(shoppingCart).length
 
     try {
-      let imgURLs = {};
-      for (let i = 0; i < imgCount; i++) {
+      let imgURLs: {[number: string]: any} = {};
+      for (let i: number = 0; i < imgCount; i++) {
         const image = shoppingCart[shoppingCartIds[i]].image
         const storageRef = ref(storage, `temp/${userId}/${i}.png`);
         uploadString(storageRef as StorageReference, image, 'data_url').then((snapshot) => {
-          console.log('Uploaded a base64url string!', snapshot);
           getDownloadURL(snapshot.ref).then((downloadURL) => {
             imgURLs = { ...imgURLs, [shoppingCartIds[i]]: downloadURL }
-            console.log('File available at', downloadURL);
-            console.log(imgURLs)
           });
         });
       }
 
       const purchaseData = { shoppingCart, user: userId, imgUrls: imgURLs }
-      console.log(purchaseData)
 
       // redirect to payment
       // await fetch("http://localhost:3001/api/payment", {
