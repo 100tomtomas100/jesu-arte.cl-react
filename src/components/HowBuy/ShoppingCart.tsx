@@ -2,8 +2,11 @@ import { useBuyStore } from "../../hooks/useStore";
 import styles from "../../assets/styles/ShoppingCart.module.scss";
 import { storage } from "../../utils/firebase";
 import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
+import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const ShoppingCart = () => {
+  const [loadingCheckout, setLoadingCheckout] = useState<boolean>(false) 
   //store
   const shoppingCart = useBuyStore((state) => state.shoppingCart);
   const setShoppingCart = useBuyStore((state) => state.setShoppingCart);
@@ -39,6 +42,7 @@ const ShoppingCart = () => {
 
   //pay for the shopping cart
   const pay = async () => {
+    setLoadingCheckout(true)
     const shoppingCartIds = Object.keys(shoppingCart)
     const userId = `user${(new Date()).getTime()}${shoppingCart[shoppingCartIds[0]].image.substr(50, 20)}`
     const imgCount = Object.keys(shoppingCart).length
@@ -109,7 +113,7 @@ const ShoppingCart = () => {
               <div className={styles.price}>
                 {"$" + shoppingCart[item].price}
               </div>
-              <button type="button" onClick={() => removeItem(item)}>
+              <button className={styles.buttonShopp} type="button" onClick={() => removeItem(item)}>
                 Remove
               </button>
             </div>
@@ -126,8 +130,8 @@ const ShoppingCart = () => {
           >{`TOTAL PRICE: $${totalPrice()}`}</div>
         </div>
         <div className={styles.buttons}>
-          <button onClick={() => addItem()}>Add More</button>
-          <button onClick={pay}>Pay</button>
+          <button className={styles.buttonShopp} onClick={() => addItem()}>Add More</button>
+          <button className={styles.buttonShopp} onClick={pay}>{loadingCheckout ? <div className={styles.loading}><AiOutlineLoading3Quarters /></div> : "Pay"}</button>
         </div>
       </div>
     </div>

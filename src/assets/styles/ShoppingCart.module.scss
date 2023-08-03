@@ -64,6 +64,7 @@
       height: 100px;
       display: flex;
       justify-content: space-around;
+      
       button{
         will-change: transform;
         height: 50px;
@@ -73,7 +74,39 @@
         font-size: 20px;
         color:white;
         background-color: $dark-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .loading{
+          animation: rotate 1s infinite ease-out;
+          height: 30px;
+          width: 30px;
+          font-size: 30px;
+          font-weight: 800;
+        }
       }
     }
+  }
+  .buttonShopp{
+    cursor: pointer;
+    &:hover{
+      scale: 1.1;
+      transition: all 0.4s ease;
+      transform: scale(1.1) translate3d(0, 0, 0);
+    }
+        &:active {
+          transition: all 0.2s ease;
+          transform: scale(0.8) translate3d(0, 0, 0);
+        }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
