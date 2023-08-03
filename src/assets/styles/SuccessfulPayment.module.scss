@@ -7,14 +7,13 @@
     justify-content: center;
     align-items: center;
     .loading{
+        box-sizing: border-box;
         width: 100px;
         height: 100px;
         font-size: 100px;
         color: $dark-color;
         animation: rotate 1s infinite ease-out;
         background-color: aliceblue;
-        margin: 0;
-        padding: 0;
     }
     .text{
         width: 30%;
