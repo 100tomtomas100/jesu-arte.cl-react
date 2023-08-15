@@ -21,7 +21,9 @@ const SuccessfulPayment = () => {
     (async () => {
       try {
         await fetch(
-          `http://localhost:3001/api/payment?session_id=${session_id}`,
+          process.env.NODE_ENV === "development"
+            ? `http://localhost:3001/api/payment?session_id=${session_id}`
+            : `https://www.jesu-arte.cl/api/payment?session_id=${session_id}`,
           {
             // await fetch(`https://www.jesu-arte.cl/api/payment?session_id=${session_id}`, {
             method: "GET",
