@@ -186,12 +186,14 @@
 @media (max-width: 450px) {
   .container {
     padding-top: 50px;
+    padding-bottom: 50px;
+    min-height: fit-content;
     form {
       display: grid;
       row-gap: 50px;
       .leftForm {
         width: 100%;
-        justify-content: center; 
+        justify-content: center;
         align-content: flex-start;
         row-gap: 50px;
         min-height: fit-content;
@@ -203,10 +205,14 @@
             width: 70vw;
           }
         }
+        .price {
+          padding-bottom: 0;
+        }
       }
       .rightForm {
         width: 100%;
         justify-content: center;
+        min-height: fit-content;
         .imageContainer {
           .inputContainer {
             label {
@@ -215,6 +221,7 @@
           }
         }
         .button {
+          padding-top: 50px;
           button {
             width: 120px;
           }
