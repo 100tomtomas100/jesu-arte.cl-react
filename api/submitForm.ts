@@ -78,12 +78,12 @@ async function submitForm(req: VercelRequest, res: VercelResponse) {
         if (error) {
           console.log(error)
           reject(error);
-          // res.json({ status: "Algo salió mal...intenta nuevamente!" });
+          res.json({ status: "Algo salió mal...intenta nuevamente!" });
           res.status(500).send(`Nodemailer error: ${error}`);
         } else {
           console.log(info)
           resolve(info);
-          // res.json({ status: "Tus datos fueron enviados de manera exitosa!" });
+          res.json({ status: "Tus datos fueron enviados de manera exitosa!" });
           res.status(200);
         }
       });
