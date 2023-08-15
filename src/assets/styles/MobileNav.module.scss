@@ -21,7 +21,7 @@
     overflow: hidden;
     .navSel {
       height: 40px;
-      width: 130px;
+      width: 150px;
       padding: 10px 5px;
       font-size: 1em;
       font-weight: 600;
@@ -42,7 +42,8 @@
 
 @media (max-width: $breakpoint-600) {
   .mobileNav {
-    position: fixed;
+    position: sticky;
+    position: -webkit-sticky;
     display: flex;
     justify-content: space-between;
   }

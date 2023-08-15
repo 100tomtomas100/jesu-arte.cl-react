@@ -1,4 +1,3 @@
-import React from "react";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Stripe from "stripe";
 
@@ -55,10 +54,17 @@ async function payment(req: VercelRequest, res: VercelResponse) {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         mode: "payment",
-        success_url: "https://www.jesu-arte.cl/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
         // success_url:
-        //   "http://localhost:3000/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
-        cancel_url: "https://www.jesu-arte.cl/contactus",
+        // "https://www.jesu-arte.cl/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
+        success_url:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3000/how-buy/successful-payment/{CHECKOUT_SESSION_ID}"
+            : "https://www.jesu-arte.cl/how-buy/successful-payment/{CHECKOUT_SESSION_ID}",
+        // cancel_url: "https://www.jesu-arte.cl/how-buy/payment-canceled",
+        cancel_url:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3000/how-buy/payment-canceled"
+            : "https://www.jesu-arte.cl/how-buy/payment-canceled",
         line_items: Object.keys(req.body.shoppingCart).map((item: any) => {
           const tech = req.body.shoppingCart[item].technique;
           const size = req.body.shoppingCart[item].size;
@@ -77,7 +83,7 @@ async function payment(req: VercelRequest, res: VercelResponse) {
           };
         }),
         metadata: {
-          user: req.body.user
+          user: req.body.user,
         },
         shipping_address_collection: {
           allowed_countries: ["CL", "AR"],
@@ -99,5 +105,7 @@ async function payment(req: VercelRequest, res: VercelResponse) {
 }
 
 
-export default allowCors(payment);
+export default process.env.NODE_ENV === "development" ?
+  allowCors(payment) :
+  payment;
 // export default payment

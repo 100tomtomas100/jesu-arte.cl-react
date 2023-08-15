@@ -2,6 +2,7 @@ import { useLayoutEffect, useContext } from "react";
 import Splitting from "splitting";
 import { gsap } from "gsap";
 import AnimContext from "../context/AnimContext";
+import { useWindowSize } from "./useStore";
 
 interface PropsTypes {
   text?: string;
@@ -15,11 +16,14 @@ const useIndexInfoTextAnim = ({
   text,
   textWrapper,
   image,
-  mobile,
+  // mobile,
   container
 }: PropsTypes): void => {
   //for checking if scrollSmoother is set
   const smootherOk = useContext(AnimContext);
+
+  //store
+  const mobile = useWindowSize((set) => set.mobile)
 
   useLayoutEffect(() => {
     const split: Splitting.Result = Splitting({
@@ -32,12 +36,17 @@ const useIndexInfoTextAnim = ({
           scrollTrigger: {
             trigger: container,
             start: "bottom center",
-            toggleActions: "reverse none none play",
+            toggleActions: mobile?"":"reverse none none play",
+            
             onEnter: () => {
-              tl.timeScale(5.0).reverse();
+              if (!mobile) {
+                tl.timeScale(5.0).reverse();
+              }
             },
             onLeaveBack: () => {
-              tl.timeScale(1.0);
+              if (!mobile) {
+                tl.timeScale(1.0);
+              }              
             },
             // markers: true,
           },
@@ -53,7 +62,7 @@ const useIndexInfoTextAnim = ({
           image as string,
           {
             scale: 1,
-            autoAlpha: mobile === "true" ? 0.8 : 1,
+            autoAlpha: mobile? 0.8 : 1,
             duration: 1,
             rotate: -10,
           },

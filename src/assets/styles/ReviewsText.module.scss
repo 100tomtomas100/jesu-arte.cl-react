@@ -4,6 +4,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  will-change: transform;
   .text {
     width: 80%;
     text-align: justify;

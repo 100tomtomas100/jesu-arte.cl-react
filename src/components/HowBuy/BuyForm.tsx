@@ -16,9 +16,13 @@ const BuyForm = () => {
   const [uploadedImg, setUploadedImg] = useState<string>();
   const [chosenTech, setChosenTech] = useState<string>();
   const [chosenSize, setChosenSize] = useState<string>();
+  const [localStorageSize, setLocalStorageSize] = useState<number>(0);
+  const [imgSize, setImgSize] = useState<number>(0);
+  const [imgType, setImgType] = useState<string>("")
 
   //store
   const setShoppingCart = useBuyStore((state) => state.setShoppingCart);
+  const shoppingCart = useBuyStore((state) => state.shoppingCart);
   const setFormOpen = useBuyStore((state) => state.setFormOpen);
 
   const { footerTimeline } = useContext(AnimContext);
@@ -33,17 +37,38 @@ const BuyForm = () => {
   useLayoutEffect(() => {
     //recalculate footer scrollTrigger start and finish
     footerTimeline?.scrollTrigger.refresh();
-  },[])
 
+    //check how many mb are used in local storage
+    function getUsedLocalStorageSpace() {
+      if (window.localStorage.length > 0) {
+        return Object.keys(window.localStorage)
+          .map(function (key) {
+            return localStorage[key].length;
+          })
+          .reduce(function (a, b) {
+            return a + b;
+          });
+      } else {
+        return  0
+      }
+    }
+    setLocalStorageSize(getUsedLocalStorageSpace() / 1024 ** 2);
+  }, []);
+
+  //image change handling
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.files?.[0]);
-    const reader = new FileReader();
-
-    reader.addEventListener("load", () => {
-      setUploadedImg(reader.result as string);
-        console.log(reader.result);
-    });
-    reader.readAsDataURL(e.target.files?.[0] as Blob);
+    if ((e.target.files?.length as number) > 0) {
+      const reader = new FileReader();
+      const size = (e.target.files?.[0].size as number) / 1024 ** 2;
+      setImgSize(size);
+      reader.addEventListener("load", () => {
+        setUploadedImg(reader.result as string);
+      });
+      setImgType(e.target.files?.[0].type as string);
+      reader.readAsDataURL(e.target.files?.[0] as Blob);
+    } else {
+      setUploadedImg("");
+    }
   };
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,14 +81,20 @@ const BuyForm = () => {
     setChosenTech(e.target.value);
   };
 
+  //add item to the shoppng cart
   const onSubmit = (data: Inputs) => {
     const item = {
       ...data,
-        price: chosenTech && chosenSize ? prices[chosenTech][chosenSize] : 0,
-      image: uploadedImg
+      price: chosenTech && chosenSize ? prices[chosenTech][chosenSize] : 0,
+      image: uploadedImg,
     };
     setShoppingCart(item);
-    setFormOpen(false)
+    setFormOpen(false);
+  };
+
+  //close form for adding new item
+  const onCancel = () => {
+    setFormOpen(false);
   };
 
   return (
@@ -125,7 +156,6 @@ const BuyForm = () => {
               {chosenTech && chosenSize
                 ? "$" + prices[chosenTech][chosenSize]
                 : "$" + 0}
-              {/* {prices["pencil"]["cm50_x_cm50"]} */}
             </p>
           </div>
         </div>
@@ -136,20 +166,34 @@ const BuyForm = () => {
               <input
                 id="image"
                 type="file"
-                accept="image/png, image/jpeg, image/webp, image/avif"
+                // accept="image/png, image/jpeg, image/webp, image/avif"
+                accept="image/*"
                 {...register("image", {
                   required: true,
                   onChange: (e) => handleImgChange(e),
+                  validate: {
+                    willFit: () => 5 - imgSize - localStorageSize > 0,
+                    notFolder: () => imgType !== "",
+                  },
                 })}
                 aria-invalid={errors.image ? "true" : "false"}
               />
-              {errors.image && (
+              {errors.image?.type === "required" && (
                 <p className={styles.inputError} role="alert">
-                  Please upload an image
+                  Please upload an image!
+                </p>
+              )}
+              {errors.image?.type === "willFit" && (
+                <p className={styles.inputError} role="alert">
+                  All the images in the shopping cart can not exceed 5mb!
+                </p>
+              )}
+              {errors.image?.type === "notFolder" && (
+                <p className={styles.inputError} role="alert">
+                  Please select a single image!
                 </p>
               )}
             </div>
-
             <div className={styles.uploadedImg}>
               {uploadedImg ? (
                 <img
@@ -168,6 +212,9 @@ const BuyForm = () => {
           </div>
           <div className={styles.button}>
             <button type="submit">Add To Cart</button>
+            {Object.keys(shoppingCart).length > 0 ?<button type="button" onClick={onCancel}>
+              Cancel
+            </button>: ""}
           </div>
         </div>
       </form>

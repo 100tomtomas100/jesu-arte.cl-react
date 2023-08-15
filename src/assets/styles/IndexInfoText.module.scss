@@ -3,11 +3,13 @@
 
 .textWrapper {
   height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: flex-end;
   background-color: $light-color;
   .container {
     height: 100%;
+    
     .image {
       border-radius: 20px;
       position: absolute;
@@ -57,16 +59,26 @@
   .textWrapper {
     padding-top: 10vh;
     .container {
+      width: 100%;
+      position: relative;
       .image {
         width: 100%;
         left: 0;
-        top: 0;
+        top: -10vh;
         opacity: 0.5;
+        overflow: hidden;
+        will-change: transform;
+        // -webkit-transform: translate3d(0,0,0);
       }
       .text {
         font-size: calc(2px + 2.8vw);
-        margin-top: 5%;
-        margin-right: 10px;
+        // margin-top: 5%;
+        // margin-right: 10px;
+        position: absolute;
+        top:5%;
+        right: 10px;
+        will-change: transform;
+        // -webkit-transform: translate3d(0,0,0);
       }
     }
   }

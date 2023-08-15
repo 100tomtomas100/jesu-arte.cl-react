@@ -18,6 +18,17 @@
     justify-content: space-around;
     align-content: space-around;
     border-radius: 0 20px 20px 0;
+    .inActive {
+      position: fixed;
+      top: 0;
+      background-color: white;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      opacity: 0.4;
+      border-radius: 0 20px 20px 0;
+      z-index: 1;
+    }
     .navLinks {
       opacity: 0;
       visibility: hidden;
@@ -44,7 +55,7 @@
 }
 
 @media (max-width: $breakpoint-600) {
-  .wrapper{
+  .wrapper {
     display: none;
   }
 }

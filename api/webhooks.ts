@@ -2,7 +2,8 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { storage } from "../src/utils/firebase.js";
-import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
+import bucket from "../src/utils/firebaseAdmin.js";
 
 export const config = {
   api: {
@@ -12,7 +13,6 @@ export const config = {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // check the request method and ensure you only accept POST requests.
-
   if (req.method === "POST") {
     let event: { [key: string]: any };
     const stripe = new Stripe(
@@ -28,14 +28,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         requestBuffer.toString(), // Stringify the request for the Stripe library
         signature,
         "whsec_f52710d6bd706808f084fdfa36984a04b4416d580d7b35651cf2dac764ad29be" // you get this secret when you register a new webhook endpoint
-        // "whsec_4KTiw6WXJTA2Uxn6UhtipDm7LbIHGrC4"
       );
       // you can now safely work with the request. The event returned is the parsed request body.
-      // res.send(200);
     } catch (error) {
       res.status(400).send(`Webhook error: ${error}`);
       return;
     }
+
+    //remove images from firebase
+    const deleteImageFromFirebase = async (user: string) => {
+      await bucket.deleteFiles({ prefix: `temp/${user}` });
+    };
+
+    const user = event.data.object.metadata.user;
+
     switch (event.type) {
       case "checkout.session.completed": {
         const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
@@ -51,50 +57,90 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         );
 
-        //get image urls
-        let imgUrls: {}[] = [];
-        const user = event.data.object.metadata.user;
-        for (let i = 0; (purchasedItems as string[]).length > i; i++){
-        // for (let i = 0; 3 > i; i++) {
+        //send email to own email about new order
+        let imgUrls: { [key: string]: any }[] = [];
+        for (let i = 0; (purchasedItems as string[]).length > i; i++) {
           const myRef = ref(storage, `temp/${user}/${i}.png`);
           const downloadUrl = await getDownloadURL(myRef);
-          imgUrls.push({filename: `${i+1}.png`, path: downloadUrl})
+          imgUrls.push({ filename: `${i + 1}.png`, path: downloadUrl });
         }
-
-        console.log(imgUrls)
-        
-
-        //lineItems?.data[0].description
-        // console.log(event.data.object.customer_details);
         const email = event.data.object.customer_details.email;
         const name = event.data.object.customer_details.name;
+        const to = "jesu.arte.cl@gmail.com";
+        const from = `New order from ${name} <contacto@jesu-arte.cl>`;
+        const subject = `There is a new order from ${name}`;
         const date = new Date(event.data.object.expires_at * 1000);
-        // console.log(event.data.object.expires_at, date);
-        // await fetch("http://localhost:3001/api/submitForm", {
-          await fetch("https://www.jesu-arte.cl/api/submitForm", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-          body: JSON.stringify({
-            name: `${name}`,
-            email: `${email}`,
-            message: `There is a new order:
+
+        try {
+          await fetch(
+            process.env.NODE_ENV === "development"
+              ? "http://localhost:3001/api/submitForm"
+              : "https://www.jesu-arte.cl/api/submitForm",
+            {
+              // await fetch("https://www.jesu-arte.cl/api/submitForm", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+              body: JSON.stringify({
+                name: `${name}`,
+                email: `${email}`,
+                message: `There is a new order:
             ${purchasedItems?.map((item: string, i: number) => {
               return ` ${i + 1}: ${item}`;
             })}
            `,
-            attachments: imgUrls
-          }),
-        });
-        // console.dir(lineItems, { depth: null });
+                attachments: imgUrls,
+                to: to,
+                from: from,
+                subject: subject,
+                date: date,
+                toCustomer: false,
+              }),
+            }
+          ).then(() => {
+            //remove temporary images from firebase
+            deleteImageFromFirebase(user);
+          });
+          // res.status(200);
+        } catch (e) {
+          console.log(e)
+          res.status(500).send(`Webhook error: ${e}`);
+        }
+
+        // //send thank you email to customer
+        // const custTo = email;
+        // const custFrom = `Thank you for your order <contacto@jesu-arte.cl>`;
+        // const custSub = "Jesu Arte Order";
+
+        // try {
+        //   console.log("second try");
+        //   await fetch("http://localhost:3001/api/submitForm", {
+        //     // await fetch("https://www.jesu-arte.cl/api/submitForm", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json;charset=utf-8",
+        //     },
+        //     body: JSON.stringify({
+        //       message: `Thank you for your order!!`,
+        //       to: custTo,
+        //       from: custFrom,
+        //       subject: custSub,
+        //       toCustomer: true,
+        //     }),
+        //   });
+        // } catch (e) {
+        //   res.status(500).send(`Webhook error: ${e}`);
+        // }
+        console.log("end")
+        res.status(200);
         break;
       }
       case "checkout.session.expired": {
-        //remove image from database
+        //remove temporary images from database
+        deleteImageFromFirebase(user);
+        break;
       }
     }
-    res.send(200);
-    //   console.log(event.type)
   }
 }

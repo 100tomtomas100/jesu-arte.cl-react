@@ -35,13 +35,25 @@ const ContactUs = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setFormStatus("Enviando...");
-    let response = await fetch("https://www.jesu-arte.cl/api/submitForm", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(data),
-    });
+    const emailDetails = {
+      from: `Formulario de contacto <contacto@jesu-arte.cl>`,
+      to: "jesu.arte.cl@gmail.com",
+      subject: `Formulario de contacto de ${data.name}`,
+      toCustomer: false,
+    };
+    // let response = await fetch("https://www.jesu-arte.cl/api/submitForm", {
+    let response = await fetch(
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3001/api/submitForm"
+        : "https://www.jesu-arte.cl/api/submitForm",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ ...data, ...emailDetails }),
+      }
+    );
     let result = await response.json();
     setFormStatus(result.status);
   };

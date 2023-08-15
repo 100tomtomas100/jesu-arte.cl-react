@@ -4,29 +4,22 @@ import { ScrollTrigger } from "gsap/all";
 import IndexGallery from "../components/AboutUs/IndexGallery";
 import InfoReviews from "../components/AboutUs/InfoReviews";
 import gsap from "gsap";
-import getWindowWidth from "../utils/getWindowWidth";
 import AnimContext from "../context/AnimContext";
+import { useWindowSize} from "../hooks/useStore";
 
 const AboutUs = (): JSX.Element => {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
   const { footerTimeline } = useContext(AnimContext)
+  //store
+  const windowWidth = useWindowSize((set)=> set.width)
+
   useEffect(() => {
     if (footerTimeline) {
       footerTimeline.scrollTrigger.refresh()
     }
   }, [footerTimeline])
 
-  useEffect(() => {
-    const handleResize = (): void => {
-      setWindowWidth(getWindowWidth());
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);    
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   useLayoutEffect(() => {
-    if (windowWidth > 0) {
+    if (windowWidth > 600) {
       let ctx: gsap.Context = gsap.context(() => {
         const panelArr: HTMLDivElement[] = gsap.utils.toArray(".PanelPin");
         panelArr.forEach((panel, i) => {

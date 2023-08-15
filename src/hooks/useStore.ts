@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import getWindowWidth from "../utils/getWindowWidth";
 
 interface GalStoreProps {
   imgPrevCurrNext: { [key: string]: number };
@@ -55,11 +57,53 @@ export const useBuyStore = create<BuyProps>((set) => ({
   counter: 0,
   setShoppingCart: (input, fromLocal) =>
     set((state) => ({
-      shoppingCart: fromLocal ? input : { ...state.shoppingCart, [state.counter]: input },
-      counter: fromLocal? 1 + Number(Object.keys(input)[Object.keys(input).length-1]) :state.counter + 1,
+      shoppingCart: fromLocal
+        ? input
+        : { ...state.shoppingCart, [state.counter]: input },
+      counter: fromLocal
+        ? 1 +
+          Number(
+            Object.keys(input).length > 0
+              ? [Object.keys(input)[Object.keys(input).length - 1]]
+              : -1
+          )
+        : state.counter + 1,
     })),
   formOpen: false,
-  setFormOpen: (input) => set(() => ({formOpen: input}))
+  setFormOpen: (input) => set(() => ({ formOpen: input })),
 }));
+
+interface inactiveScreenProps {
+  active: boolean;
+  setActive: (input:boolean) => void;
+}
+
+export const useInactiveScreenStore = create<inactiveScreenProps>((set) => ({
+  active: false,
+  setActive: (input) => set(() => ({ active: input })),
+}));
+
+interface mobileNavProps {
+  showMenu: boolean | ((prevState: any) => boolean);
+  setShowMenu: (input: boolean | ((prevState: any) => boolean)) => void;
+}
+
+export const useMobileNavStore = create<mobileNavProps>((set) => ({
+  showMenu: false,
+  setShowMenu: (input) => set(() => ({showMenu: input}))
+}))
+
+interface windowSizeProps {
+  width: number;
+  mobile: boolean;
+  setWidth: (input: number) => void;
+  
+}
+
+export const useWindowSize = create<windowSizeProps>((set) => ({
+  width: 0,
+  mobile: false,
+  setWidth: (input) => set(() => ({ width: input, mobile: input >600? false: true}))  
+}))
 
 export default useGalStore;

@@ -34,7 +34,7 @@ const MobileNav = () => {
         <div
           onClick={handleClick}
           className={styles.navSel}
-          id="mobNavLink_portfolio"
+          id="mobNavLink_gallery"
         >
           Mis trabajos
         </div>

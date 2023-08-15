@@ -10,7 +10,7 @@
     .inputContainer {
       display: grid;
       will-change: transform;
-      .inputError{
+      .inputError {
         padding-top: 15px;
         color: red;
         font-size: 17px;
@@ -35,6 +35,7 @@
           height: 35px;
           border-radius: 5px;
           background-color: white;
+          color: black;
         }
       }
       .price {
@@ -51,6 +52,7 @@
       width: 60%;
       min-height: inherit;
       .imageContainer {
+        overflow: hidden;
         width: 100%;
         height: 80%;
         // image{
@@ -70,6 +72,7 @@
           }
           input {
             &::file-selector-button {
+              color: black;
               background-color: white;
               border-radius: 5px;
               height: 35px;
@@ -95,7 +98,6 @@
             width: 70%;
             height: 100%;
             object-fit: cover;
-            
           }
         }
       }
@@ -106,7 +108,7 @@
         height: 20%;
         display: flex;
         align-items: flex-start;
-        justify-content: center;
+        justify-content: space-around;
         button {
           background-color: $dark-color;
           font-weight: 600;
@@ -115,6 +117,107 @@
           height: 35px;
           border-radius: 5px;
           color: white;
+          cursor: pointer;
+          &:hover {
+            scale: 1.1;
+            transition: all 0.4s ease;
+            transform: scale(1.1) translate3d(0, 0, 0);
+          }
+
+          &:active {
+            transition: all 0.2s ease;
+            transform: scale(0.8) translate3d(0, 0, 0);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 451px) and (max-width: $breakpoint-800) {
+  .container {
+    padding-top: 50px;
+    form {
+      .leftForm {
+        align-content: flex-start;
+        row-gap: 90px;
+        .inputContainer {
+          label {
+            font-size: 23px;
+          }
+          select {
+            font-size: 15px;
+          }
+        }
+        .price {
+          font-size: 23px;
+        }
+      }
+      .rightForm {
+        .imageContainer {
+          height: 70%;
+          .inputContainer {
+            label {
+              font-size: 23px;
+            }
+            input {
+              &::file-selector-button {
+                height: 30px;
+                font-size: 15px;
+              }
+            }
+          }
+          .uploadedImg {
+            .imgPlaceHolder {
+              width: 70%;
+            }
+          }
+        }
+        .button {
+          button {
+            width: 120px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .container {
+    padding-top: 50px;
+    form {
+      display: grid;
+      row-gap: 50px;
+      .leftForm {
+        width: 100%;
+        justify-content: center; 
+        align-content: flex-start;
+        row-gap: 50px;
+        min-height: fit-content;
+        .inputContainer {
+          label {
+            font-size: 20px;
+          }
+          select {
+            width: 70vw;
+          }
+        }
+      }
+      .rightForm {
+        width: 100%;
+        justify-content: center;
+        .imageContainer {
+          .inputContainer {
+            label {
+              font-size: 20px;
+            }
+          }
+        }
+        .button {
+          button {
+            width: 120px;
+          }
         }
       }
     }

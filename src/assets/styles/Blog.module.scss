@@ -8,6 +8,7 @@
   padding-bottom: 30px;
   display: grid;
   gap: 30px;
+  will-change: transform;
   .post {
     width: 70%;
     height: 55vh;
@@ -35,12 +36,14 @@
         display: flex;
         font-size: 16px;
         justify-content: flex-end;
+        will-change: transform;
       }
     }
 
     .content {
       height: 35vh;
       overflow: hidden;
+      will-change: transform;
     }
     .continueRead {
       color: $dark-color;

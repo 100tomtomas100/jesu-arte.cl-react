@@ -1,0 +1,15 @@
+@import "config";
+
+.container{
+    height: 100vh;
+    background-color: $light-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .text{
+        text-align: center;
+        color: $dark-color;
+        font-size: 30px;
+        font-weight: 600;
+    }
+}

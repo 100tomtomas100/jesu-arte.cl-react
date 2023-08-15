@@ -1,22 +1,59 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useMobileNavBarAnim from "../../hooks/useMobileNavBarAnim";
+import { useMobileNavStore } from "../../hooks/useStore";
 
-const MobileNavBar = ({ className, navLink, navScope }: { className: string, navLink: string, navScope: unknown }): JSX.Element => {
+const MobileNavBar = ({
+  className,
+  navLink,
+  navScope,
+}: {
+  className: string;
+  navLink: string;
+  navScope: unknown;
+}): JSX.Element => {
   const barRef = useRef<SVGPathElement | null>(null);
-  const [showNav, setShowNav] = useState<boolean>(false);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
   useMobileNavBarAnim({
     barRef: barRef as unknown,
-    showNav: showNav as boolean,
     navLink: navLink as string,
     navScope: navScope as unknown,
   });
 
+  //store
+  const setShowMobileNav = useMobileNavStore((state) => state.setShowMenu);
+  const showMobileNav = useMobileNavStore((state) => state.showMenu);
+
+  useEffect(() => {
+    const clickCloseMobilNav = (e: MouseEvent) => {
+      if (!svgRef.current?.contains(e.target as Node)) {
+        setShowMobileNav(false);
+      }
+    };
+
+    const scrollCloseMobilNav = () => {
+      setShowMobileNav(false);
+    };
+
+    window.addEventListener("click", (e) => clickCloseMobilNav(e));
+    window.addEventListener("scroll", scrollCloseMobilNav);
+    return () => {
+      window.removeEventListener("scroll", scrollCloseMobilNav);
+      window.removeEventListener("click", clickCloseMobilNav);
+    };
+  }, []);
+
   const handleClick = () => {
-    setShowNav(!showNav);
+    setShowMobileNav(!showMobileNav);
   };
 
   return (
-    <svg viewBox="0 0 640 640" className={className} onClick={handleClick}>
+    <svg
+      viewBox="0 0 640 640"
+      className={className}
+      onClick={handleClick}
+      ref={svgRef}
+    >
       <path
         ref={barRef}
         id="ImportedBarPath"

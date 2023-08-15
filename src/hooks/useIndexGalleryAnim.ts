@@ -2,6 +2,7 @@ import { useLayoutEffect, useContext } from "react";
 import { gsap } from "gsap/all";
 import Splitting from "splitting";
 import AnimContext from "../context/AnimContext";
+import { useWindowSize } from "./useStore";
 
 interface PropsTypes {
   background: string;
@@ -13,8 +14,11 @@ interface PropsTypes {
 }
 
 const useIndexGalleryAnim = (props: PropsTypes): void => {
+  //store
+  const mobile = useWindowSize((state) => state.mobile);
+
   //for checking if scrollSmoother is set
-  const smootherOk = useContext(AnimContext);
+  const smootherOk = useContext(AnimContext).smootherOk;
 
   useLayoutEffect(() => {
     if (smootherOk) {
@@ -25,19 +29,19 @@ const useIndexGalleryAnim = (props: PropsTypes): void => {
             start: "top center",
             end: "bottom center",
             onEnter: () => {
-              tl.timeScale(1.0);
+              return mobile ? "" : tl.timeScale(1.0);
             },
             onEnterBack: () => {
-              tl.timeScale(1.0);
+              return mobile ? "" : tl.timeScale(1.0);
             },
             onLeaveBack: () => {
-              tl.timeScale(5.0).reverse();
+              return mobile ? "" : tl.timeScale(5.0).reverse();
             },
             onLeave: () => {
-              tl.timeScale(5.0).reverse();
+              return mobile ? "" : tl.timeScale(5.0).reverse();
             },
             // markers: true,
-            toggleActions: "play reverse play reverse",
+            toggleActions: mobile ? "" : "play reverse play reverse",
           },
         });
         Splitting({
@@ -89,7 +93,12 @@ const useIndexGalleryAnim = (props: PropsTypes): void => {
           },
           ">"
         );
+
+        if (mobile) {
+          tl.progress(1);
+        }
       }, (props.wrapper as any).current);
+
       return () => ctx.revert(); // <- CLEANUP!
     }
   }, [smootherOk]);

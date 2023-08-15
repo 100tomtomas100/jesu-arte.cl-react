@@ -1,14 +1,18 @@
-import { initializeApp, cert, ServiceAccount } from "firebase-admin/app";
+import { initializeApp, cert} from "firebase-admin/app";
 import { getStorage } from "firebase-admin/storage";
-import serviceAccount from "./jesu-arte-firebase-adminsdk-sj7l5-378df69a87.json";
 
 initializeApp({
-  credential: cert(serviceAccount as ServiceAccount),
+  credential: cert({
+    ...JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string),
+    private_key: (JSON.parse(
+      process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
+    )).private_key.replace(/\\n/g, "\n"),
+  }),
   storageBucket: "jesu-arte.appspot.com",
 });
 
-export const bucket = getStorage().bucket();
-
+ const bucket = getStorage().bucket();
+ export default bucket;
 // 'bucket' is an object defined in the @google-cloud/storage library.
 // See https://googlecloudplatform.github.io/google-cloud-node/#/docs/storage/latest/storage/bucket
 // for more details.

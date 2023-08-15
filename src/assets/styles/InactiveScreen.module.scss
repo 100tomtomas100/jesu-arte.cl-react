@@ -1,0 +1,30 @@
+@import "config";
+
+.container{
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 10;
+    opacity: 0.4;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    .loading{
+        height: 100px;
+        width: 100px;        
+        font-size: 100px;    
+        animation: rotate 1s infinite ease-out;
+        color: $dark-color
+    }    
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -4,26 +4,29 @@ import { storage } from "../../utils/firebase";
 import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useInactiveScreenStore } from "../../hooks/useStore";
 
 const ShoppingCart = () => {
-  const [loadingCheckout, setLoadingCheckout] = useState<boolean>(false) 
+  const [loadingCheckout, setLoadingCheckout] = useState<boolean>(true);
   //store
+  //shoppingCart
   const shoppingCart = useBuyStore((state) => state.shoppingCart);
   const setShoppingCart = useBuyStore((state) => state.setShoppingCart);
-  const formOpen = useBuyStore((state) => state.formOpen)
-  const setFormOpen = useBuyStore((state) => state.setFormOpen)
+  const formOpen = useBuyStore((state) => state.formOpen);
+  const setFormOpen = useBuyStore((state) => state.setFormOpen);
+  const setInactiveScreen = useInactiveScreenStore((state) => state.setActive);
 
-  //total price for shopping cart 
+  //total price for shopping cart
   const totalPrice = () => {
-    const allKeys = Object.keys(shoppingCart)
-    let total: number = 0
-    allKeys.map(key => {
-      total += shoppingCart[key].price
-    })
-    return total
-  }
+    const allKeys = Object.keys(shoppingCart);
+    let total: number = 0;
+    allKeys.map((key) => {
+      total += shoppingCart[key].price;
+    });
+    return total;
+  };
 
-  //remove single item from shopping cart 
+  //remove single item from shopping cart
   const removeItem = (item: string) => {
     const copy = { ...shoppingCart };
     delete copy[item];
@@ -37,39 +40,49 @@ const ShoppingCart = () => {
 
   //open form for new item to add to shopping cart
   const addItem = () => {
-    setFormOpen(true)    
-  }
+    setFormOpen(true);
+  };
 
   //pay for the shopping cart
   const pay = async () => {
-    setLoadingCheckout(true)
-    const shoppingCartIds = Object.keys(shoppingCart)
-    const userId = `user${(new Date()).getTime()}${shoppingCart[shoppingCartIds[0]].image.substr(50, 20)}`
-    const imgCount = Object.keys(shoppingCart).length
-
+    setLoadingCheckout(true);
+    setInactiveScreen(true);
+    const shoppingCartIds = Object.keys(shoppingCart);
+    const userId = (`user${new Date().getTime()}${shoppingCart[
+      shoppingCartIds[0]
+    ].image.substr(50, 20)}`).replace(/\//g, ']')
+    const imgCount = Object.keys(shoppingCart).length;
+    console.log(userId);
     try {
-      let imgURLs: {[number: string]: any} = {};
+      let imgURLs: { [number: string]: any } = {};
       for (let i: number = 0; i < imgCount; i++) {
-        const image = shoppingCart[shoppingCartIds[i]].image
+        const image = shoppingCart[shoppingCartIds[i]].image;
         const storageRef = ref(storage, `temp/${userId}/${i}.png`);
-        uploadString(storageRef as StorageReference, image, 'data_url').then((snapshot) => {
-          getDownloadURL(snapshot.ref).then((downloadURL) => {
-            imgURLs = { ...imgURLs, [shoppingCartIds[i]]: downloadURL }
-          });
-        });
+        uploadString(storageRef as StorageReference, image, "data_url").then(
+          (snapshot) => {
+            getDownloadURL(snapshot.ref).then((downloadURL) => {
+              imgURLs = { ...imgURLs, [shoppingCartIds[i]]: downloadURL };
+            });
+          }
+        );
       }
 
-      const purchaseData = { shoppingCart, user: userId, imgUrls: imgURLs }
+      const purchaseData = { shoppingCart, user: userId, imgUrls: imgURLs };
 
       // redirect to payment
-      // await fetch("http://localhost:3001/api/payment", {
-        await fetch("https://www.jesu-arte.cl/api/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(purchaseData),
-      })
+      await fetch(
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:3001/api/payment"
+          : "https://www.jesu-arte.cl/api/payment",
+        {
+          // await fetch("https://www.jesu-arte.cl/api/payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(purchaseData),
+        }
+      )
         .then(async (res: Response) => {
           if (res.ok) return res.json();
           const json = await res.json();
@@ -79,8 +92,8 @@ const ShoppingCart = () => {
           window.location.href = url;
           // console.log(url)
         });
-    } catch (err: any){
-      console.error(err.error)
+    } catch (err: any) {
+      console.error(err.error);
     }
 
     // let result = await response.json();
@@ -113,7 +126,11 @@ const ShoppingCart = () => {
               <div className={styles.price}>
                 {"$" + shoppingCart[item].price}
               </div>
-              <button className={styles.buttonShopp} type="button" onClick={() => removeItem(item)}>
+              <button
+                className={styles.buttonShopp}
+                type="button"
+                onClick={() => removeItem(item)}
+              >
                 Remove
               </button>
             </div>
@@ -130,8 +147,12 @@ const ShoppingCart = () => {
           >{`TOTAL PRICE: $${totalPrice()}`}</div>
         </div>
         <div className={styles.buttons}>
-          <button className={styles.buttonShopp} onClick={() => addItem()}>Add More</button>
-          <button className={styles.buttonShopp} onClick={pay}>{loadingCheckout ? <div className={styles.loading}><AiOutlineLoading3Quarters /></div> : "Pay"}</button>
+          <button className={styles.buttonShopp} onClick={() => addItem()}>
+            Add More
+          </button>
+          <button className={styles.buttonShopp} onClick={pay}>
+            Pay
+          </button>
         </div>
       </div>
     </div>

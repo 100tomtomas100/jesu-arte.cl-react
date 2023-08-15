@@ -2,10 +2,10 @@ import mobileNavX from "../utils/svg/mobileNavX";
 import gsap from "gsap";
 import { useLayoutEffect, useContext } from "react";
 import AnimContext from "../context/AnimContext";
+import { useMobileNavStore } from "./useStore";
 
 interface PropsTypes {
   barRef: unknown;
-  showNav: boolean;
   navLink: string;
   navScope: unknown;
 }
@@ -15,12 +15,17 @@ let navAnim: gsap.core.Timeline = gsap.timeline({ paused: true });
 
 const useMobileNavBarAnim = ({
   barRef,
-  showNav,
+  // showNav,
   navLink,
   navScope,
 }: PropsTypes): void => {
   //for checking if scrollSmoother is set
   const smootherOk = useContext(AnimContext);
+
+  //store 
+  const setShowMobileNav = useMobileNavStore((state) => state.setShowMenu);
+  const showMobileNav = useMobileNavStore((state) => state.showMenu);
+
 
   //NavBar animation. Place animation in timeline
   useLayoutEffect(() => {
@@ -47,13 +52,13 @@ const useMobileNavBarAnim = ({
 
   //NavBar animation. Start animation on click
   useLayoutEffect(() => {
-    if (showNav === true) {
+    if (showMobileNav === true) {
       navAnim.play();
     }
-    if (showNav === false) {
+    if (showMobileNav === false) {
       navAnim.reverse();
     }
-  }, [showNav]);
+  }, [showMobileNav]);
 };
 
 export default useMobileNavBarAnim;

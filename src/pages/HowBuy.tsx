@@ -15,10 +15,12 @@ const HowBuy = () => {
   const { footerTimeline } = useContext(AnimContext);
 
   useEffect(() => {
-    console.log("scroll");
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 0);
+
+    //recalculate footer scrollTrigger start and finish
+    footerTimeline?.scrollTrigger.refresh();
   }, [formOpen]);
 
   useEffect(() => {
@@ -35,9 +37,6 @@ const HowBuy = () => {
     ) {
       localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     }
-
-    //recalculate footer scrollTrigger start and finish
-    footerTimeline?.scrollTrigger.refresh();
   }, [shoppingCart]);
 
   return (

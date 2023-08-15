@@ -2,18 +2,18 @@
 @import "./assets/styles/config";
 @import "./assets/styles/cellSplitting";
 
-
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 .App {
-  overflow: hidden;
   background-color: $light-color;
+  // -webkit-overflow-scrolling: touch;
+  .pagesContainer {
+    overflow: hidden;
+  }
 }
 .word {
   opacity: 0;
 }
-
-

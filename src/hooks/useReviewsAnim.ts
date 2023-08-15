@@ -4,6 +4,7 @@ import gsap from "gsap";
 import title from "../utils/svg/title";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import AnimContext from "../context/AnimContext";
+import { useWindowSize } from "./useStore";
 
 gsap.registerPlugin(MorphSVGPlugin);
 
@@ -16,6 +17,9 @@ interface propsTypes {
   container: string;
 }
 const useReviewsAnim = (props: propsTypes) => {
+  //store
+  const mobile = useWindowSize((state) => state.mobile);
+
   //for checking if scrollSmoother is set
   const smootherOk = useContext(AnimContext);
 
@@ -26,17 +30,17 @@ const useReviewsAnim = (props: propsTypes) => {
           scrollTrigger: {
             trigger: props.container,
             onEnter: () => {
-              tl.timeScale(1.0);
+              return mobile? "":tl.timeScale(1.0);
             },
 
             onLeaveBack: () => {
-              tl.timeScale(5.0).reverse();
+              return mobile ? "" : tl.timeScale(5.0).reverse();
             },
 
             start: "top center",
             end: "bottom center",
             // markers: true,
-            toggleActions: "play none none reverse",
+            toggleActions: mobile? "":"play none none reverse",
           },
         });
 
@@ -76,6 +80,9 @@ const useReviewsAnim = (props: propsTypes) => {
           },
           ">-1"
         );
+        if (mobile) {
+          tl.progress(1);
+        }
       }, (props.scope as any).current);
     return () => ctx.revert();
     }

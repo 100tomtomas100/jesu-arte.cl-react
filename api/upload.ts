@@ -32,4 +32,5 @@ async function upload(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-export default allowCors(upload);
+export default process.env.NODE_ENV === "development" ? allowCors(upload) :
+upload;
