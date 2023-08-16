@@ -102,7 +102,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             //remove temporary images from firebase
             deleteImageFromFirebase(user);
           });
-          // res.status(200);
+          res.status(200);
         } catch (e) {
           console.log(e)
           res.status(500).send(`Webhook error: ${e}`);
@@ -133,7 +133,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }),
           });
         } catch (e) {
-          res.status(500).send(`Webhook error: ${e}`);
+          // res.status(500).send(`Webhook error: ${e}`);
         }
         console.log("end")
         res.status(200);
