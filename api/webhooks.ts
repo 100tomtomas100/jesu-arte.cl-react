@@ -136,15 +136,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           // res.status(500).send(`Webhook error: ${e}`);
         }
         console.log("end")
-        res.status(200);
+        // res.status(200);
         break;
       }
       case "checkout.session.expired": {
         //remove temporary images from database
         deleteImageFromFirebase(user);
-        res.status(200);
+        // res.status(200);
         break;
       }
     }
+    res.json({ received: true });
   }
 }
