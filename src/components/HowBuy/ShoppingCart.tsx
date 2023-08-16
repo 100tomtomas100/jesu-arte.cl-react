@@ -2,9 +2,10 @@ import { useBuyStore } from "../../hooks/useStore";
 import styles from "../../assets/styles/ShoppingCart.module.scss";
 import { storage } from "../../utils/firebase";
 import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInactiveScreenStore } from "../../hooks/useStore";
+import useShoppingCartAnim from "../../hooks/useShoppingCartAnim";
 
 const ShoppingCart = () => {
   const [loadingCheckout, setLoadingCheckout] = useState<boolean>(true);
@@ -15,6 +16,15 @@ const ShoppingCart = () => {
   const formOpen = useBuyStore((state) => state.formOpen);
   const setFormOpen = useBuyStore((state) => state.setFormOpen);
   const setInactiveScreen = useInactiveScreenStore((state) => state.setActive);
+
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useShoppingCartAnim({
+    items: `.${styles.item}`,
+    buttons: `.${styles.buttonShopp}`,
+    totals: `.${styles.totals}`,
+    container: containerRef,
+  });
 
   //total price for shopping cart
   const totalPrice = () => {
@@ -101,7 +111,7 @@ const ShoppingCart = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <div className={styles.allItems}>
         {Object.keys(shoppingCart).map((item: string) => {
           //   console.log(shoppingCart[item].size);
@@ -139,11 +149,11 @@ const ShoppingCart = () => {
       </div>
       <div className={styles.bottom}>
         <div className={styles.totals}>
-          <div className={styles.totalItems}>{`TOTAL ITEMS: ${
-            Object.keys(shoppingCart).length
-          }`}</div>
           <div
-            className={styles.totalPrice}
+            className={`${styles.totalItems}, ${styles.totals}`}
+          >{`TOTAL ITEMS: ${Object.keys(shoppingCart).length}`}</div>
+          <div
+            className={`${styles.totalPrice}, ${styles.totals}`}
           >{`TOTAL PRICE: $${totalPrice()}`}</div>
         </div>
         <div className={styles.buttons}>
