@@ -33,7 +33,7 @@ const useShoppingCartAnim = (props: PropsTypes) => {
           scale: 0,
           duration: 0.5,
           stagger: 0.2,
-        },0);
+        });
       }, (props.container as any).current);
 
       return () => ctx.revert(); // <- CLEANUP!

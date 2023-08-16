@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "../../assets/styles/BuyForm.module.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
 import placeholder from "../../assets/images/placeholder.webp";
 import prices from "../../utils/prices";
 import { useBuyStore } from "../../hooks/useStore";
 import AnimContext from "../../context/AnimContext";
+import useBuyFormAnim from "../../hooks/useBuyFormAnim";
 
 type Inputs = {
   technique: string;
@@ -27,12 +28,21 @@ const BuyForm = () => {
 
   const { footerTimeline } = useContext(AnimContext);
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+
+
+  useBuyFormAnim({
+    container: containerRef,
+    anim: `.${styles.anim2}`
+  })
 
   useLayoutEffect(() => {
     //recalculate footer scrollTrigger start and finish
@@ -98,11 +108,15 @@ const BuyForm = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       {/* <div className={styles.cart}>Cart</div> */}
-      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        className={`${styles.anim2}`}
+      >
         <div className={styles.leftForm}>
-          <div className={`${styles.inputContainer} ${styles.inputAnim}`}>
+          <div className={`${styles.inputContainer}  ${styles.anim}`}>
             <label htmlFor="technique">Technique</label>
             <select
               id="technique"
@@ -126,7 +140,7 @@ const BuyForm = () => {
               </p>
             )}
           </div>
-          <div className={`${styles.inputContainer} ${styles.inputAnim}`}>
+          <div className={`${styles.inputContainer} ${styles.anim}`}>
             <label htmlFor="size">Size</label>
             <select
               id="size"
@@ -150,7 +164,7 @@ const BuyForm = () => {
               </p>
             )}
           </div>
-          <div className={styles.price}>
+          <div className={`${styles.price} ${styles.anim}`}>
             <p>Price</p>
             <p>
               {chosenTech && chosenSize
@@ -161,7 +175,7 @@ const BuyForm = () => {
         </div>
         <div className={styles.rightForm}>
           <div className={styles.imageContainer}>
-            <div className={`${styles.inputContainer} ${styles.inputAnim}`}>
+            <div className={`${styles.inputContainer} ${styles.anim}`}>
               <label htmlFor="image">Upload Image</label>
               <input
                 id="image"
@@ -194,7 +208,7 @@ const BuyForm = () => {
                 </p>
               )}
             </div>
-            <div className={styles.uploadedImg}>
+            <div className={`${styles.uploadedImg} ${styles.anim}`}>
               {uploadedImg ? (
                 <img
                   src={uploadedImg}
@@ -211,10 +225,20 @@ const BuyForm = () => {
             </div>
           </div>
           <div className={styles.button}>
-            <button type="submit">Add To Cart</button>
-            {Object.keys(shoppingCart).length > 0 ?<button type="button" onClick={onCancel}>
-              Cancel
-            </button>: ""}
+            <button type="submit" className={`${styles.anim}`}>
+              Add To Cart
+            </button>
+            {Object.keys(shoppingCart).length > 0 ? (
+              <button
+                type="button"
+                onClick={onCancel}
+                className={`${styles.anim}`}
+              >
+                Cancel
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </form>
