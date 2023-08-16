@@ -77,7 +77,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               ? "http://localhost:3001/api/submitForm"
               : "https://www.jesu-arte.cl/api/submitForm",
             {
-              // await fetch("https://www.jesu-arte.cl/api/submitForm", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json;charset=utf-8",
@@ -109,36 +108,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         // //send thank you email to customer
-        // const custTo = email;
-        // const custFrom = `Thank you for your order <contacto@jesu-arte.cl>`;
-        // const custSub = "Jesu Arte Order";
+        const custTo = email;
+        const custFrom = `Thank you for your order <contacto@jesu-arte.cl>`;
+        const custSub = "Jesu Arte Order";
 
-        // try {
-        //   console.log("second try");
-        //   await fetch("http://localhost:3001/api/submitForm", {
-        //     // await fetch("https://www.jesu-arte.cl/api/submitForm", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json;charset=utf-8",
-        //     },
-        //     body: JSON.stringify({
-        //       message: `Thank you for your order!!`,
-        //       to: custTo,
-        //       from: custFrom,
-        //       subject: custSub,
-        //       toCustomer: true,
-        //     }),
-        //   });
-        // } catch (e) {
-        //   res.status(500).send(`Webhook error: ${e}`);
-        // }
+        try {
+          console.log("second try");
+          await fetch(
+            process.env.NODE_ENV === "development"
+              ? "http://localhost:3001/api/submitForm"
+              : "https://www.jesu-arte.cl/api/submitForm",
+            {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({
+              message: `Thank you for your order!!`,
+              to: custTo,
+              from: custFrom,
+              subject: custSub,
+              toCustomer: true,
+            }),
+          });
+        } catch (e) {
+          res.status(500).send(`Webhook error: ${e}`);
+        }
         console.log("end")
-        res.status(200);
+        res.send(200);
         break;
       }
       case "checkout.session.expired": {
         //remove temporary images from database
         deleteImageFromFirebase(user);
+        res.send(200);
         break;
       }
     }
