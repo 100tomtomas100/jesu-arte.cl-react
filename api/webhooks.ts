@@ -45,9 +45,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     switch (event.type) {
       case "checkout.session.completed": {
-        
-        //send response that request was received
-        res.json({ received: true });
+        // //send response that request was received
+        // res.json({ received: true });
 
         const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
           event.data.object.id,
@@ -77,7 +76,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const date = new Date(event.data.object.expires_at * 1000);
 
         try {
-          await fetch(
+          fetch(
             process.env.NODE_ENV === "development"
               ? "http://localhost:3001/api/submitForm"
               : "https://www.jesu-arte.cl/api/submitForm",
@@ -108,7 +107,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           });
           res.status(200);
         } catch (e) {
-          console.log(e)
+          console.log(e);
           res.status(500).send(`Webhook error: ${e}`);
         }
 
@@ -119,27 +118,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         try {
           console.log("second try");
-          await fetch(
+           fetch(
             process.env.NODE_ENV === "development"
               ? "http://localhost:3001/api/submitForm"
               : "https://www.jesu-arte.cl/api/submitForm",
             {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-            body: JSON.stringify({
-              message: `Thank you for your order!!`,
-              to: custTo,
-              from: custFrom,
-              subject: custSub,
-              toCustomer: true,
-            }),
-          });
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8",
+              },
+              body: JSON.stringify({
+                message: `Thank you for your order!!`,
+                to: custTo,
+                from: custFrom,
+                subject: custSub,
+                toCustomer: true,
+              }),
+            }
+          );
         } catch (e) {
           res.status(500).send(`Webhook error: ${e}`);
         }
-        console.log("end")
+        console.log("end");
         // res.status(200);
         break;
       }
@@ -150,6 +150,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
       }
     }
-    // res.json({ received: true });
+    //send response that request was received
+    res.json({ received: true });
   }
 }
