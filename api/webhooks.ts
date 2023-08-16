@@ -27,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       event = stripe.webhooks.constructEvent(
         requestBuffer.toString(), // Stringify the request for the Stripe library
         signature,
-        "whsec_4KTiw6WXJTA2Uxn6UhtipDm7LbIHGrC4"
+        "whsec_OhdbKaqL8KB6dCVU4fgT2d049oglhKLy"
         //"whsec_f52710d6bd706808f084fdfa36984a04b4416d580d7b35651cf2dac764ad29be" // you get this secret when you register a new webhook endpoint
       );
       // you can now safely work with the request. The event returned is the parsed request body.
