@@ -73,3 +73,45 @@
     }
   }
 }
+
+@media (min-width: $breakpoint-601) and (max-width: $breakpoint-800){
+ .container {
+  .post {
+    width: 80%;
+    .title {
+      h1 {
+        font-size: 25px;
+      }
+      .date {     
+        font-size: 14px;       
+      }
+    }
+    .continueRead {
+      width: 50%;
+    }
+  }
+}
+}
+
+@media (max-width: $breakpoint-600){
+.container {
+  .post {
+    width: 90%;
+    .title {
+      h1 {
+        font-size: 20px;
+      }
+      .date {     
+        font-size: 12px;       
+      }
+    }
+    .continueRead {
+      width: 80%;
+      h2{
+        font-size: 17px;
+      }
+    }
+  }
+}
+}
+

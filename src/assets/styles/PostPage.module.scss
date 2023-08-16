@@ -1,19 +1,32 @@
 @import "config";
-
-.container{
+.containerWrapper {
+  padding-top: 30px;
+  background-color: white;
+  .container {
     width: 90%;
     min-height: 100vh;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 30px;
     margin-bottom: 30px;
     will-change: transform;
-    .title{
-        display: flex;
-        justify-content: space-between;
+    .title {
+      display: flex;
+      justify-content: space-between;
     }
-    .date{
-        display:flex;
-        align-items: flex-end;
+    .date {
+      display: flex;
+      align-items: flex-end;
     }
+  }
+}
+@media (min-width: $breakpoint-801) and (max-width: $breakpoint-1000) {
+  .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: $breakpoint-601) and (max-width: $breakpoint-800) {
+  .container {
+    width: 80%;
+  }
 }
