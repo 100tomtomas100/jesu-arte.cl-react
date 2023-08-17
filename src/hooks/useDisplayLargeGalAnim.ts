@@ -43,8 +43,10 @@ const useDisplayLargeGalAnim = (props: PropsTypes): void => {
 
         //after gallery is closed update or reset values
         const resetContainer = () => {
+          
           //update key values
           if (props.setCurrKey && props.currKey) {
+            
             if (props.imgShowing === "curr") {
               props.setCurrKey({
                 ...props.currKey,

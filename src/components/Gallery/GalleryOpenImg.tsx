@@ -40,7 +40,7 @@ const GalleryOpenImg = (props: PropsTypes): JSX.Element => {
       currKey: currKey,
       loadedImg: loadedImages,
     });
-  }, [props.changeImgProps.imgShowing]);
+  }, [props.changeImgProps.imgShowing, currKey]);
 
   //for opening and closing the large gallery
   useEffect(() => {
@@ -57,7 +57,7 @@ const GalleryOpenImg = (props: PropsTypes): JSX.Element => {
         setImgShowing: props.setImgShowing,
       });
     }
-  }, [loadedImages[imgPrevCurrNext.curr], largeGalOn]);
+  }, [loadedImages[imgPrevCurrNext.curr], largeGalOn, currKey]);
 
   const handleLoaded = (num: any) => {
     if (!loadedImages[num]) {
