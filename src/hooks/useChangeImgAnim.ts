@@ -60,8 +60,9 @@ const useChangeImgAnim = (props: Props): void => {
       };
       const resetSplitImg = () => {
 
-        setSplitImg(split);
+        
         setTimeout(() => {
+          setSplitImg(split);
           setLargeGalAnimRunning(false);
         }, 0);
          
