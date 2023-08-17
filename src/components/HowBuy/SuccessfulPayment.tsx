@@ -17,7 +17,7 @@ const SuccessfulPayment = () => {
   useEffect(() => {
     //set inactive screen
     setInactiveScreen(true);
-    // localStorage.removeItem("shoppingCart");
+    localStorage.removeItem("shoppingCart");
     (async () => {
       try {
         await fetch(
