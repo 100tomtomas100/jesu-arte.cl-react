@@ -69,50 +69,21 @@ async function submitForm(req: VercelRequest, res: VercelResponse) {
       attachments: attachments,
     };
 
-    console.log(mailInfo);
-
     await new Promise((resolve, reject) => {
-      console.log("inside promise before send");
       contactEmail.sendMail(mailInfo, (error, info) => {
-        console.log("inside send");
         if (error) {
-          console.log(error)
+          console.log(error);
           reject(error);
           res.json({ status: "Algo salió mal...intenta nuevamente!" });
           res.status(500).send(`Nodemailer error: ${error}`);
         } else {
-          console.log(info)
+          console.log(info);
           resolve(info);
           res.json({ status: "Tus datos fueron enviados de manera exitosa!" });
           res.status(200);
         }
       });
     });
-
-    // await new Promise((resolve, reject) => {
-    //   contactEmail.sendMail(mail, (error, info) => {
-    //     console.log("Inside sendMail callback - processing response");
-    //     if (error) {
-    //       console.log(error);
-    //       reject(error);
-    //     } else {
-    //       console.log("Email sent:", info.response);
-    //       resolve(info);
-    //     }
-    //   });
-    // })
-
-    // try {
-    //   const info = await contactEmail.sendMail(mail);
-    //   console.log("Email sent:", info.response);
-    //   res
-    //     .status(200)
-    //     .json({ status: "Tus datos fueron enviados de manera exitosa!" });
-    // } catch (error) {
-    //   console.log("Error sending email:", error);
-    //   res.status(500).json({ status: "Algo salió mal...intenta nuevamente!" });
-    // }
-    console.log("end")
   }
 }
 

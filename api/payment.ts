@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Stripe from "stripe";
 
 const stripe = new Stripe(
-  "sk_test_51NQZX9I7MuNssT8a3byrY79NB4OzlmIlBAy8EG724M85KOWMGwLSmGS3ex4wKeQOIVK9AE2gc7cnJu6QeytFNgdq000Ppz5es5",
+  process.env.STRIPE_TEST_KEY as string,
   {
     apiVersion: "2022-11-15",
   }
@@ -50,7 +50,6 @@ const allowCors =
 async function payment(req: VercelRequest, res: VercelResponse) {
   if (req.method === "POST") {
     try {
-      // console.log(Object.keys(req.body.shoppingCart))
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         mode: "payment",

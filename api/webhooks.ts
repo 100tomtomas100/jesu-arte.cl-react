@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === "POST") {
     let event: { [key: string]: any };
     const stripe = new Stripe(
-      "sk_test_51NQZX9I7MuNssT8a3byrY79NB4OzlmIlBAy8EG724M85KOWMGwLSmGS3ex4wKeQOIVK9AE2gc7cnJu6QeytFNgdq000Ppz5es5",
+    process.env.STRIPE_TEST_KEY as string,
       { apiVersion: "2022-11-15" }
     ); // version null sets the most recent API version
 
@@ -27,8 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       event = stripe.webhooks.constructEvent(
         requestBuffer.toString(), // Stringify the request for the Stripe library
         signature,
-        "whsec_OhdbKaqL8KB6dCVU4fgT2d049oglhKLy"
-        //"whsec_f52710d6bd706808f084fdfa36984a04b4416d580d7b35651cf2dac764ad29be" // you get this secret when you register a new webhook endpoint
+        process.env.STRIPE_SIGNATURE as string
       );
       // you can now safely work with the request. The event returned is the parsed request body.
     } catch (error) {
@@ -67,8 +66,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
         const email = event.data.object.customer_details.email;
         const name = event.data.object.customer_details.name;
-        const to = "jesu.arte.cl@gmail.com";
-        const from = `New order from ${name} <contacto@jesu-arte.cl>`;
+        const to = `${process.env.EMAIL_USER}`;
+        const from = `New order from ${name} <${process.env.EMAIL_WEB}>`;
         const subject = `There is a new order from ${name}`;
         const date = new Date(event.data.object.expires_at * 1000);
 
@@ -136,14 +135,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         } catch (e) {
           res.status(500).send(`Webhook error: ${e}`);
         }
-        console.log("end");
-        // res.status(200);
         break;
       }
       case "checkout.session.expired": {
         //remove temporary images from database
         deleteImageFromFirebase(user);
-        // res.status(200);
         break;
       }
     }
