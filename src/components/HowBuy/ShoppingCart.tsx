@@ -2,13 +2,15 @@ import { useBuyStore } from "../../hooks/useStore";
 import styles from "../../assets/styles/ShoppingCart.module.scss";
 import { storage } from "../../utils/firebase";
 import { ref, uploadString, getDownloadURL, StorageReference } from "firebase/storage";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useInactiveScreenStore } from "../../hooks/useStore";
 import useShoppingCartAnim from "../../hooks/useShoppingCartAnim";
+import AnimContext from "../../context/AnimContext";
 
 const ShoppingCart = () => {
   const [loadingCheckout, setLoadingCheckout] = useState<boolean>(true);
+
   //store
   //shoppingCart
   const shoppingCart = useBuyStore((state) => state.shoppingCart);
@@ -17,7 +19,15 @@ const ShoppingCart = () => {
   const setFormOpen = useBuyStore((state) => state.setFormOpen);
   const setInactiveScreen = useInactiveScreenStore((state) => state.setActive);
 
+  const { footerTimeline } = useContext(AnimContext);
+
+
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    //recalculate footer scrollTrigger start and finish
+    footerTimeline?.scrollTrigger.refresh();
+  }, [])
 
   useShoppingCartAnim({
     items: `.${styles.item}`,

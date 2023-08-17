@@ -107,13 +107,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           res.status(500).send(`Webhook error: ${e}`);
         }
 
-        // //send thank you email to customer
+        // send thank you email to customer
         const custTo = email;
         const custFrom = `Thank you for your order <contacto@jesu-arte.cl>`;
         const custSub = "Jesu Arte Order";
 
         try {
-          console.log("second try");
           await fetch(
             process.env.NODE_ENV === "development"
               ? "http://localhost:3001/api/submitForm"
