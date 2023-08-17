@@ -62,7 +62,6 @@ const ShoppingCart = () => {
       shoppingCartIds[0]
     ].image.substr(50, 20)}`).replace(/\//g, ']')
     const imgCount = Object.keys(shoppingCart).length;
-    console.log(userId);
     try {
       let imgURLs: { [number: string]: any } = {};
       for (let i: number = 0; i < imgCount; i++) {

@@ -36,7 +36,6 @@ const SuccessfulPayment = () => {
             return response.json();
           })
           .then((data) => {
-            console.log(data);
             setEmail(data.email);
             setName(data.name);
           });
