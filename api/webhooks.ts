@@ -72,7 +72,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const date = new Date(event.data.object.expires_at * 1000);
 
         try {
-          await fetch(
+          fetch(
             process.env.NODE_ENV === "development"
               ? "http://localhost:3001/api/submitForm"
               : "https://www.jesu-arte.cl/api/submitForm",
@@ -113,7 +113,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const custSub = "Jesu Arte Order";
 
         try {
-          await fetch(
+          fetch(
             process.env.NODE_ENV === "development"
               ? "http://localhost:3001/api/submitForm"
               : "https://www.jesu-arte.cl/api/submitForm",
