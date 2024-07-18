@@ -45,13 +45,9 @@ const Footer = (): JSX.Element => {
         </div>
         <div className={classes.cooperation}>
           <h4 className={`${classes.marcia} ${animProps.animate}`}>
-            In cooperation with &nbsp;
-            <a
-              target={"_blank"}
-              rel="noopener noreferrer"
-              href="https://www.digitalmarcia.com"
-            >
-              Digital Marcia
+            Developed and designed by &nbsp;
+            <a target={"_blank"} href="https://www.creativenobody.com">
+              Creative Nobody
             </a>
           </h4>
           <div className={classes.socialize}>
